@@ -135,10 +135,36 @@ public class GameWorld {
     }
 
     float angle = 0;
-    private void movement() {
+    private void movement1() {
         Vector3 position = perspectiveCamera.position;
+        Vector3 rot = new Vector3(20,0,20);
 
      //   position = new Vector3(4*Constants.CELL_SIZE,0, 4*Constants.CELL_SIZE);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            angle += Math.PI/10;
+            Vector3 tmpV1 = new Vector3(20,0,20);
+            tmpV1.set(perspectiveCamera.direction).crs(perspectiveCamera.up).y = 0f;
+            perspectiveCamera.rotateAround(rot, tmpV1.nor(),(float) (Math.PI/10));
+
+            perspectiveCamera.rotateAround(rot, rot,-(float) (Math.PI/10));
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            angle -= Math.PI/10;
+
+            Vector3 tmpV1 = new Vector3(20,0,20);
+            tmpV1.set(perspectiveCamera.direction).crs(perspectiveCamera.up).y = 0f;
+            perspectiveCamera.rotateAround(rot, tmpV1.nor(),(float) (Math.PI/10));
+
+            //perspectiveCamera.rotateAround(rot, rot,(float) (Math.PI/10));
+        }
+
+        perspectiveCamera.update();
+    } private void movement() {
+        Vector3 position = perspectiveCamera.position;
+
+        //   position = new Vector3(4*Constants.CELL_SIZE,0, 4*Constants.CELL_SIZE);
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             angle += Math.PI/10;
@@ -154,6 +180,7 @@ public class GameWorld {
 
         perspectiveCamera.update();
     }
+
 
     private void movement0() {
 

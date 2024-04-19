@@ -1,6 +1,9 @@
 package com.posbeu.littletown.engine.pezzi;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.posbeu.littletown.engine.Board;
 import com.posbeu.littletown.engine.MossePossibili;
 import com.posbeu.littletown.engine.Position;
@@ -50,4 +53,8 @@ public class Regina extends Pezzo {
         mossePossibili.addMossa(m);
         return true;
     }*/
+   @Override
+   public Model getModel() {
+       return getModel("regina");
+   }
 }

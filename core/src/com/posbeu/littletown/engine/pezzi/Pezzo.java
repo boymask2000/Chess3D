@@ -1,12 +1,16 @@
 package com.posbeu.littletown.engine.pezzi;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
+import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.utils.JsonReader;
 import com.posbeu.littletown.engine.Board;
 import com.posbeu.littletown.engine.MossePossibili;
 import com.posbeu.littletown.engine.Position;
@@ -62,8 +66,8 @@ public abstract class Pezzo {
         if (i < 0 || i > 7) return false;
         if (j < 0 || j > 7) return false;
         Pezzo p = b.getPezzo(i, j);
-        if (p != null ){
-            if(p.getColore() != this.getColore()) {
+        if (p != null) {
+            if (p.getColore() != this.getColore()) {
                 Mossa m = new Mossa(this, from, to);
                 mossePossibili.addMossa(m);
             }
@@ -73,7 +77,9 @@ public abstract class Pezzo {
         mossePossibili.addMossa(m);
         return true;
     }
-    public Model getModel(){
+
+
+    public Model getModel() {
         ModelBuilder modelBuilder = new ModelBuilder();
         Material boxMaterial = new
                 Material(ColorAttribute.createDiffuse(com.badlogic.gdx.graphics.Color.GREEN),
@@ -82,5 +88,24 @@ public abstract class Pezzo {
         Model box = modelBuilder.createBox(5, 5, 5, boxMaterial,
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         return box;
-    };
+    }
+
+    ;
+
+    protected Model getModel(String fName) {
+        String fileName = fName;
+        ObjLoader objLoader = new ObjLoader();
+        Model model;
+        if (getColore() == Color.BIANCO)
+            fileName += "_b.g3dj";
+        else
+            fileName += "_n.g3dj";
+
+        model = new G3dModelLoader(new JsonReader()).loadModel(Gdx.files.internal("data/" + fileName));
+
+
+        return model;
+
+
+    }
 }

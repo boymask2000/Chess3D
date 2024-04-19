@@ -62,8 +62,7 @@ public class MyInputTracker implements InputProcessor {
     public boolean mouseMoved(int screenX, int screenY) {
 
         Vector3 pos = getPoint(screenX, screenY);
-        System.out.println(pos.x+" " +pos.z);
-System.out.println((int)((SIZE-pos.x)/SIZE)+" " +(int)(pos.z/SIZE));
+
         return false;
     }
 

@@ -1,6 +1,12 @@
 package com.posbeu.littletown.engine.pezzi;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
+import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
+import com.badlogic.gdx.utils.JsonReader;
 import com.posbeu.littletown.engine.Board;
 import com.posbeu.littletown.engine.MossePossibili;
 import com.posbeu.littletown.engine.Position;
@@ -32,5 +38,20 @@ public class Torre extends Pezzo {
 
     }
 
+    @Override
+    public Model getModel() {
+       return getModel("torre");
+    }
 
+    public Model getModel1() {
+        ObjLoader objLoader = new ObjLoader();
+        Model model;
+        if (getColore() == Color.BIANCO)
+            model = objLoader.loadModel(Gdx.files.internal("data/torre_b.obj"));
+        else model = objLoader.loadModel(Gdx.files.internal("data/torre_n.obj"));
+
+        return model;
+
+
+    }
 }
