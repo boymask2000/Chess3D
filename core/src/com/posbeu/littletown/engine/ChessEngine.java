@@ -11,18 +11,18 @@ import com.posbeu.littletown.engine.player.Player;
 import java.util.List;
 
 
-public class Engine {
+public class ChessEngine {
 
     private Board board = new Board();
     private Color playerColor = Color.BIANCO;
 
     public static void main(String[] args) {
-        Engine engine = new Engine();
+        ChessEngine engine = new ChessEngine();
 
         //     engine.start();
     }
 
-    public Engine() {
+    public ChessEngine() {
         board.init();
         BoardGDX.setBoard(board);
     }

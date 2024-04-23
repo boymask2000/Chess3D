@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.posbeu.littletown.component.BaseComponent;
+import com.posbeu.littletown.component.MarkerComponent;
+import com.posbeu.littletown.component.PezzoComponent;
 
 import java.util.List;
 
@@ -17,6 +19,8 @@ public class MyInputTracker implements InputProcessor {
     private PerspectiveCamera camera;
     private Engine engine;
     private ShapeRenderer shapeRenderer;
+    private BaseComponent first = null;
+    private BaseComponent second = null;
 
     @Override
     public boolean keyDown(int keycode) {
@@ -36,12 +40,32 @@ public class MyInputTracker implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         touchPos = getPoint(screenX, screenY);
+        BaseComponent selected = getObject(screenX, screenY);
+
+        MarkerComponent marker = new MarkerComponent(selected.getPosition());
+        Pool.addMarker(marker);
+        if (second != null) {
+            Pool.removeMarkers();
+            first = null;
+            second = null;
+        }
+
+        System.out.println(selected);
+
+        if (first == null) {
+            if( selected instanceof PezzoComponent){
+                System.out.println("");
+            }
+            first = selected;
+        } else {
+            if (first != selected) {
+                second = selected;
+            }
+        }
 
         return false;
     }
 
-    private BaseComponent first = null;
-    private BaseComponent second = null;
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -57,7 +81,9 @@ public class MyInputTracker implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         return false;
     }
-    int SIZE= Constants.CELL_SIZE;
+
+    int SIZE = Constants.CELL_SIZE;
+
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
 
@@ -94,11 +120,53 @@ public class MyInputTracker implements InputProcessor {
         Vector3 intersection = new Vector3();
         if (Intersector.intersectRayPlane(pickRay, plane, intersection)) {
             // The ray has hit the plane, intersection is the point it hit
+            System.out.println(intersection);
             return intersection;
         }
         return null;
     }
 
+    public BaseComponent getObject(int screenX, int screenY) {
+        Vector3 click = getPoint(screenX, screenY);
+        BaseComponent result = null;
+        float distance = 10000f;
+        List<BaseComponent> instances = Pool.getInstances();
+        for (BaseComponent comp : instances) {
 
+            Vector3 position = comp.getPosition();
+
+            float dist2 = click.dst2(position);
+            if (dist2 > 40) continue;
+            if (dist2 < distance) {
+                result = comp;
+                distance = dist2;
+            }
+
+        }
+        return result;
+    }
+
+    public BaseComponent getObject5(int screenX, int screenY) {
+        Vector3 click = getPoint(screenX, screenY);
+        BaseComponent result = null;
+        float distance = -1;
+        List<BaseComponent> instances = Pool.getInstances();
+        for (BaseComponent comp : instances) {
+
+            Vector3 position = comp.getPosition();
+            //      position.y = 0;
+//            instance.transform.getTranslation(position);
+//            position.add(center);
+            float dist2 = click.dst2(position);
+            if (distance >= 0f && dist2 > distance) continue;
+            //    System.out.println(comp+ " "+dist2);
+            if (dist2 > 40) continue;
+
+            result = comp;
+            distance = dist2;
+
+        }
+        return result;
+    }
 
 }

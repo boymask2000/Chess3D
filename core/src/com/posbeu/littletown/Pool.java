@@ -1,6 +1,7 @@
 package com.posbeu.littletown;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.posbeu.littletown.component.BaseComponent;
+import com.posbeu.littletown.component.MarkerComponent;
 
 
 import java.util.ArrayList;
@@ -18,7 +20,6 @@ public class Pool {
 
     private static FreeTypeFontGenerator generator = null;
     private static BitmapFont genericfont;
-
 
 
     private static Engine engine;
@@ -53,8 +54,16 @@ public class Pool {
         Pool.engine = engine;
     }
 
+    private static List<Entity> markers = new ArrayList<>();
 
+    public static void addMarker(MarkerComponent m) {
 
+        addInstance(m);
+        Entity entity = new Entity();
+        entity.add(m);
+        markers.add(entity);
+        engine.addEntity(entity);
+    }
 
     public static PerspectiveCamera getCamera() {
         return camera;
@@ -72,5 +81,12 @@ public class Pool {
             genericfont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         }
         return genericfont;
+    }
+
+    public static void removeMarkers() {
+        for (Entity m : markers) {
+            engine.removeEntity(m);
+
+        }
     }
 }

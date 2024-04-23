@@ -13,6 +13,13 @@ public class BaseComponent implements Component {
     protected Vector3 position;
     public Model model;
 
+
+    @Override
+    public String toString() {
+        return model.toString();
+    }
+
+
     public ModelInstance getInstance() {
         return instance;
     }

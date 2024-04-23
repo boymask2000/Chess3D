@@ -54,7 +54,7 @@ public class Basic3D implements ApplicationListener {
 
     @Override
     public void render() {
-movement();
+        movement();
         camController.update();
 
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -70,12 +70,15 @@ movement();
         modelBatch.dispose();
         model.dispose();
     }
+
     Vector3 position = new Vector3();
+
     private void movement() {
         instance.transform.getTranslation(position);
         position.x += Gdx.graphics.getDeltaTime();
         instance.transform.setTranslation(position);
     }
+
     @Override
     public void resize(int width, int height) {
     }

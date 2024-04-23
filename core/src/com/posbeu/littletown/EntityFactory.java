@@ -24,7 +24,7 @@ import com.posbeu.littletown.models.CellNera;
 import java.util.List;
 
 public class EntityFactory {
-    static final int SIZE=Constants.CELL_SIZE;
+
     static Model playerModel;
 
     static {
@@ -41,36 +41,47 @@ public class EntityFactory {
     }
 
     public static void createStaticEntity(Model model, float x, float y,
-                                            float z) {
+                                          float z) {
         final BoundingBox boundingBox = new BoundingBox();
         model.calculateBoundingBox(boundingBox);
 
         Entity entity = new Entity();
         ModelComponent modelComponent = new ModelComponent(model, x, y,
                 z);
+
         entity.add(modelComponent);
 
         Pool.addInstance(modelComponent);
         Engine engine = Pool.getEngine();
         engine.addEntity(entity);
-    //    return entity;
+        //    return entity;
     }
 
-    public static void createCell(int i, int j){
-        Vector3 pos = new Vector3(i*SIZE, 0,j*SIZE);
+    public static void createCell(int i, int j) {
+
         Model m = CellNera.getModel();
-        if( (i+j) % 2 ==0) m= CellBianca.getModel();
-        createStaticEntity(m, i*SIZE, -1,j*SIZE);
+        if ((i + j) % 2 == 0) m = CellBianca.getModel();
 
+        float consta = Constants.CELL_SIZE;//6.5f;
+        float posX = i * consta + Constants.CELL_SIZE;
+        float posY = j * Constants.CELL_SIZE + Constants.CELL_SIZE;
+
+        createStaticEntity(m, posX, -1, posY);
+        //  createStaticEntity(m, i * Constants.CELL_SIZE, -1, j * Constants.CELL_SIZE);
     }
 
 
+    public static void createPezzo(int i, int j, Pezzo pezzo) {
+        float consta = Constants.CELL_SIZE;// 6.5f;
+        float posX = i * consta + Constants.CELL_SIZE;
+        float posY = j * Constants.CELL_SIZE + Constants.CELL_SIZE;
 
-    public static void createPezzo(int i, int j,  Pezzo pezzo){
-        Vector3 pos = new Vector3(i*SIZE, 0,j*SIZE);
+        Vector3 pos = new Vector3(posX, 0, posY);
         Engine engine = Pool.getEngine();
         Entity entity = new Entity();
         PezzoComponent comp = new PezzoComponent(pos, pezzo);
+        comp.setPosition(pos);
+        //comp.setPosition(new Vector3(i * Constants.CELL_SIZE, 0, j * Constants.CELL_SIZE));
         entity.add(comp);
         engine.addEntity(entity);
 
@@ -78,12 +89,12 @@ public class EntityFactory {
     }
 
 
- public static void createPezzo(Vector3 pos, Engine engine, Pezzo pezzo) {
-     Entity entity = new Entity();
-     PezzoComponent comp = new PezzoComponent(pos, pezzo);
-     entity.add(comp);
-     engine.addEntity(entity);
+    public static void createPezzo(Vector3 pos, Engine engine, Pezzo pezzo) {
+        Entity entity = new Entity();
+        PezzoComponent comp = new PezzoComponent(pos, pezzo);
+        entity.add(comp);
+        engine.addEntity(entity);
 
-     Pool.addInstance(comp);
- }
+        Pool.addInstance(comp);
+    }
 }

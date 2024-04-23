@@ -1,10 +1,8 @@
 package com.posbeu.littletown.engine.pezzi;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
-import com.posbeu.littletown.engine.Engine;
+import com.posbeu.littletown.engine.ChessEngine;
 import com.posbeu.littletown.engine.mosse.Mossa;
 import com.posbeu.littletown.engine.Board;
 import com.posbeu.littletown.engine.MossePossibili;
@@ -37,7 +35,7 @@ public class Pedone extends Pezzo {
         if (i > 0) {
             Pezzo pezzo = board.getPezzo(i - 1, j + fact);
             if (pezzo != null) {
-                if (pezzo.getColore() == Engine.avversario(getColore())) {
+                if (pezzo.getColore() == ChessEngine.avversario(getColore())) {
                     Mossa m = new Mossa(this, from, new Position(i - 1, j + fact));
                     mossePossibili.addMossa(m);
                 }
@@ -46,7 +44,7 @@ public class Pedone extends Pezzo {
         if (i < 7) {
             Pezzo pezzo = board.getPezzo(i + 1, j + fact);
             if (pezzo != null) {
-                if (pezzo.getColore() == Engine.avversario(getColore())) {
+                if (pezzo.getColore() == ChessEngine.avversario(getColore())) {
                     Mossa m = new Mossa(this, from, new Position(i + 1, j + fact));
 
                     mossePossibili.addMossa(m);

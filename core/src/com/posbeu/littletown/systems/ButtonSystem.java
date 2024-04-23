@@ -7,9 +7,6 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.posbeu.littletown.GameWorld;
 import com.posbeu.littletown.component.ButtonComponent;
-import com.posbeu.littletown.component.StatusComponent;
-
-import java.util.Iterator;
 
 public class ButtonSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;

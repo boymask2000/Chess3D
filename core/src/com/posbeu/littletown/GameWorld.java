@@ -35,7 +35,6 @@ public class GameWorld {
 
     private Engine engine;
 
-    public ModelBuilder modelBuilder = new ModelBuilder();
     private PerspectiveCamera perspectiveCamera;
 
     private ShapeRenderer shapeRenderer;
@@ -135,47 +134,43 @@ public class GameWorld {
     }
 
     float angle = 0;
-    private void movement1() {
+
+    private void movement() {
         Vector3 position = perspectiveCamera.position;
-        Vector3 rot = new Vector3(20,0,20);
-
-     //   position = new Vector3(4*Constants.CELL_SIZE,0, 4*Constants.CELL_SIZE);
-
+        Vector3 rot = new Vector3(20, 0, 20);
+        Vector3 tmpV1 = new Vector3(20, 20, 0);
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            angle += Math.PI/10;
-            Vector3 tmpV1 = new Vector3(20,0,20);
-            tmpV1.set(perspectiveCamera.direction).crs(perspectiveCamera.up).y = 0f;
-            perspectiveCamera.rotateAround(rot, tmpV1.nor(),(float) (Math.PI/10));
 
-            perspectiveCamera.rotateAround(rot, rot,-(float) (Math.PI/10));
+            perspectiveCamera.rotateAround(rot, new Vector3(0, 1, 0), -(float) (Math.PI / 10));
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            angle -= Math.PI/10;
 
-            Vector3 tmpV1 = new Vector3(20,0,20);
-            tmpV1.set(perspectiveCamera.direction).crs(perspectiveCamera.up).y = 0f;
-            perspectiveCamera.rotateAround(rot, tmpV1.nor(),(float) (Math.PI/10));
+            perspectiveCamera.rotateAround(rot, new Vector3(0, 1, 0), (float) (Math.PI / 10));
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 
-            //perspectiveCamera.rotateAround(rot, rot,(float) (Math.PI/10));
+            //       perspectiveCamera.rotateAround(rot, new Vector3(0,0,1),(float) (Math.PI/10));
         }
 
         perspectiveCamera.update();
-    } private void movement() {
+    }
+
+    private void movement1() {
         Vector3 position = perspectiveCamera.position;
 
         //   position = new Vector3(4*Constants.CELL_SIZE,0, 4*Constants.CELL_SIZE);
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            angle += Math.PI/10;
+            angle += Math.PI / 10;
 
-            perspectiveCamera.rotate(position, -(float) (Math.PI/10));
+            perspectiveCamera.rotate(position, -(float) (Math.PI / 10));
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            angle -= Math.PI/10;
+            angle -= Math.PI / 10;
 
-            perspectiveCamera.rotate(position, (float) (Math.PI/10));
+            perspectiveCamera.rotate(position, (float) (Math.PI / 10));
         }
 
         perspectiveCamera.update();

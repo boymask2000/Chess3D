@@ -14,11 +14,14 @@ public class ModelComponent extends BaseComponent implements Component {
         this.model = model;
         this.instance = new ModelInstance(model, new
                 Matrix4().setToTranslation(x, y, z));
+
+        setPosition(new Vector3(x, y, z));
     }
 
     public ModelComponent(Model model, Vector3 pos) {
         this.model = model;
         this.instance = new ModelInstance(model, new
                 Matrix4().setToTranslation(pos.x, pos.y, pos.z));
+        setPosition(pos);
     }
 }

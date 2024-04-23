@@ -93,19 +93,14 @@ public abstract class Pezzo {
     ;
 
     protected Model getModel(String fName) {
+        System.out.println("Modello "+fName);
         String fileName = fName;
-        ObjLoader objLoader = new ObjLoader();
-        Model model;
+
         if (getColore() == Color.BIANCO)
             fileName += "_b.g3dj";
         else
             fileName += "_n.g3dj";
 
-        model = new G3dModelLoader(new JsonReader()).loadModel(Gdx.files.internal("data/" + fileName));
-
-
-        return model;
-
-
+        return new G3dModelLoader(new JsonReader()).loadModel(Gdx.files.internal("data/" + fileName));
     }
 }

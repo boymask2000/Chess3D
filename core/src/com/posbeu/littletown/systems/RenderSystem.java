@@ -20,7 +20,7 @@ import com.posbeu.littletown.component.*;
 public class RenderSystem extends EntitySystem {
     private ImmutableArray<Entity> pezziEntities;
     private ImmutableArray<Entity> modelEntities;
-    private ImmutableArray<Entity> entities3;
+    private ImmutableArray<Entity> markersEntities;
     private ImmutableArray<Entity> entities4;
     private ImmutableArray<Entity> entities5;
     private ModelBatch batch;
@@ -55,7 +55,11 @@ public class RenderSystem extends EntitySystem {
                         Family.all(
                                 ModelComponent.class
                         ).get());
-
+        markersEntities =
+                engine.getEntitiesFor(
+                        Family.all(
+                                MarkerComponent.class
+                        ).get());
 
         for (int i = 0; i < pezziEntities.size(); i++) {
             PezzoComponent mod =
@@ -69,23 +73,12 @@ public class RenderSystem extends EntitySystem {
             batch.render(mod.instance, environment);
 
         }
-      /*  for (int i = 0; i < entities2.size(); i++) {
-            EdificioComponent mod =
-                    entities2.get(i).getComponent(EdificioComponent.class);
+        for (int i = 0; i < markersEntities.size(); i++) {
+            MarkerComponent mod =
+                    markersEntities.get(i).getComponent(MarkerComponent.class);
             batch.render(mod.instance, environment);
-            Edificio ed = (Edificio) mod.instance.userData;
-            show(mod.getPosition(), ed.getTipoEdificio().name());
 
         }
-
-
-        for (int i = 0; i < entities4.size(); i++) {
-            RoadComponent mod =
-                    entities4.get(i).getComponent(RoadComponent.class);
-            batch.render(mod.instance, environment);
-
-
-        }*/
 
     }
 

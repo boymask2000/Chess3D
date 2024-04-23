@@ -17,7 +17,7 @@ import java.util.List;
 public class CheckerMinaccia {
     public static List<Pezzo> isCellaMinacciata(int i, int j, Board board, Color myColor) {
         List<Pezzo> out = new ArrayList<>();
-        Color col = Engine.avversario(myColor);
+        Color col = ChessEngine.avversario(myColor);
 
         checkCavalli(i, j, board, col, out);
         checkPedone(i, j, board, col, out);
