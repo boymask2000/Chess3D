@@ -21,6 +21,7 @@ public class RenderSystem extends EntitySystem {
     private ImmutableArray<Entity> pezziEntities;
     private ImmutableArray<Entity> modelEntities;
     private ImmutableArray<Entity> markersEntities;
+    private ImmutableArray<Entity> mossePossibiliEntities;
     private ImmutableArray<Entity> entities4;
     private ImmutableArray<Entity> entities5;
     private ModelBatch batch;
@@ -60,6 +61,20 @@ public class RenderSystem extends EntitySystem {
                         Family.all(
                                 MarkerComponent.class
                         ).get());
+
+        mossePossibiliEntities=
+                engine.getEntitiesFor(
+                        Family.all(
+                                MossaPossibileComponent.class
+                        ).get());
+
+
+        for (int i = 0; i < mossePossibiliEntities.size(); i++) {
+            MossaPossibileComponent mod =
+                    mossePossibiliEntities.get(i).getComponent(MossaPossibileComponent.class);
+            batch.render(mod.instance, environment);
+
+        }
 
         for (int i = 0; i < pezziEntities.size(); i++) {
             PezzoComponent mod =

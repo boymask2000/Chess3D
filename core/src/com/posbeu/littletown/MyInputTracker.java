@@ -10,7 +10,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.posbeu.littletown.component.BaseComponent;
 import com.posbeu.littletown.component.MarkerComponent;
+import com.posbeu.littletown.component.MossaPossibileComponent;
 import com.posbeu.littletown.component.PezzoComponent;
+import com.posbeu.littletown.engine.mosse.Mossa;
+import com.posbeu.littletown.engine.pezzi.Pezzo;
 
 import java.util.List;
 
@@ -36,12 +39,12 @@ public class MyInputTracker implements InputProcessor {
     public boolean keyTyped(char character) {
         return false;
     }
-
+    PezzoComponent pezzoComp;
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         touchPos = getPoint(screenX, screenY);
         BaseComponent selected = getObject(screenX, screenY);
-
+        if (selected == null) return false;
         MarkerComponent marker = new MarkerComponent(selected.getPosition());
         Pool.addMarker(marker);
         if (second != null) {
@@ -53,12 +56,24 @@ public class MyInputTracker implements InputProcessor {
         System.out.println(selected);
 
         if (first == null) {
-            if( selected instanceof PezzoComponent){
-                System.out.println("");
+            if (selected instanceof PezzoComponent) {
+                 pezzoComp = (PezzoComponent) selected;
+                Pezzo pezzo = pezzoComp.getPezzo();
+                List<Mossa> ll = Pool.getChessEngine().getMosse(pezzo, pezzoComp.getI(), pezzoComp.getJ());
+                for (Mossa m : ll) {
+                    System.out.println(m);
+                    Vector3 v = new Vector3(m.getTo().getFloatI(), 0, m.getTo().getFloatJ());
+                    MossaPossibileComponent mk = new MossaPossibileComponent(v);
+                    Pool.addMossaPossibile(mk);
+                }
             }
             first = selected;
         } else {
             if (first != selected) {
+
+
+                pezzoComp.setDestination(selected.getPosition());
+
                 second = selected;
             }
         }
@@ -81,8 +96,6 @@ public class MyInputTracker implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         return false;
     }
-
-    int SIZE = Constants.CELL_SIZE;
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
@@ -116,7 +129,7 @@ public class MyInputTracker implements InputProcessor {
         //   Ray pickRay = viewport.getPickRay(screenCoords.x, screenCoords.y);
 
         // we want to check a collision only on a certain plane, in this case the X/Z plane
-        Plane plane = new Plane(new Vector3(0, SIZE, 0), Vector3.Zero);
+        Plane plane = new Plane(new Vector3(0, Constants.CELL_SIZE, 0), Vector3.Zero);
         Vector3 intersection = new Vector3();
         if (Intersector.intersectRayPlane(pickRay, plane, intersection)) {
             // The ray has hit the plane, intersection is the point it hit

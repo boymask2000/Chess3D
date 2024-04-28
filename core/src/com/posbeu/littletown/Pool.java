@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.posbeu.littletown.component.BaseComponent;
 import com.posbeu.littletown.component.MarkerComponent;
+import com.posbeu.littletown.component.MossaPossibileComponent;
+import com.posbeu.littletown.engine.ChessEngine;
 
 
 import java.util.ArrayList;
@@ -20,14 +22,11 @@ public class Pool {
 
     private static FreeTypeFontGenerator generator = null;
     private static BitmapFont genericfont;
-
-
     private static Engine engine;
     private static List<BaseComponent> instances = new ArrayList<>();
     private static ButtonScreen buttonScreen;
-
-
     private static PerspectiveCamera camera;
+    private static ChessEngine chessEngine;
 
     public static ButtonScreen getButtonScreen() {
         return buttonScreen;
@@ -65,6 +64,15 @@ public class Pool {
         engine.addEntity(entity);
     }
 
+    public static void addMossaPossibile(MossaPossibileComponent m) {
+
+        addInstance(m);
+        Entity entity = new Entity();
+        entity.add(m);
+        markers.add(entity);//  <----------- attenzionw
+        engine.addEntity(entity);
+    }
+
     public static PerspectiveCamera getCamera() {
         return camera;
     }
@@ -89,4 +97,13 @@ public class Pool {
 
         }
     }
+
+    public static void setChessEngine(ChessEngine chessEngine) {
+        Pool.chessEngine = chessEngine;
+    }
+
+    public static ChessEngine getChessEngine() {
+        return chessEngine;
+    }
+
 }

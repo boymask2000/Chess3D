@@ -8,17 +8,13 @@ import com.badlogic.gdx.math.Vector3;
 public class BaseComponent implements Component {
     public ModelInstance instance;
 
-
-
     protected Vector3 position;
     public Model model;
-
 
     @Override
     public String toString() {
         return model.toString();
     }
-
 
     public ModelInstance getInstance() {
         return instance;
@@ -27,7 +23,6 @@ public class BaseComponent implements Component {
     public void setInstance(ModelInstance instance) {
         this.instance = instance;
     }
-
 
     public Model getModel() {
         return model;

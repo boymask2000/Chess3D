@@ -2,6 +2,7 @@ package com.posbeu.littletown.engine.player;
 
 import com.badlogic.gdx.Gdx;
 
+import com.posbeu.littletown.Constants;
 import com.posbeu.littletown.engine.Board;
 import com.posbeu.littletown.engine.Position;
 
@@ -32,16 +33,30 @@ public class BoardGDX {
         BoardGDX.board = board;
     }
 
-    public static float convertPosToCoord(int i) {
-        int size = height / 8;
-        return i * size;
+    public static float convertIPosToCoord(int i) {
+        float consta = Constants.CELL_SIZE;// 6.5f;
+        float posX = i * consta + Constants.CELL_SIZE;
+        return posX;
+     /*   int size = height / 8;
+        return i * size;*/
+    }
+    public static float convertJPosToCoord(int j) {
+        float consta = Constants.CELL_SIZE;// 6.5f;
+
+        float posY = j * Constants.CELL_SIZE + Constants.CELL_SIZE;
+        return posY;
+    /*    int size = height / 8;
+        return i * size;*/
     }
 
     public static Position convertToFloatPos(int i, int j) {
 
-        int size = height / 8;
+        float posX = convertIPosToCoord(i);
+        float posY = convertJPosToCoord(j);
+
+/*        int size = height / 8;
         float posX = size * i;
-        float posY = size * j;
+        float posY = size * j;*/
         Position p = new Position();
         p.setJ(j);
         p.setI(i);

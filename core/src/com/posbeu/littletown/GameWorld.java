@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.posbeu.littletown.engine.ChessEngine;
 import com.posbeu.littletown.engine.pezzi.Alfiere;
 import com.posbeu.littletown.engine.pezzi.Cavallo;
 import com.posbeu.littletown.engine.pezzi.Color;
@@ -20,6 +21,7 @@ import com.posbeu.littletown.engine.pezzi.Re;
 import com.posbeu.littletown.engine.pezzi.Regina;
 import com.posbeu.littletown.engine.pezzi.Torre;
 import com.posbeu.littletown.systems.RenderSystem;
+import com.posbeu.littletown.systems.WalkersSystem;
 
 public class GameWorld {
     private static final double SIN = Math.sin(Math.PI / 4);
@@ -54,6 +56,9 @@ public class GameWorld {
         addEntities();
 
         initPezzi();
+
+        ChessEngine chessEngine = new ChessEngine();
+        Pool.setChessEngine(chessEngine);
     }
 
     private void initPezzi() {
@@ -121,7 +126,7 @@ public class GameWorld {
     private void addSystems() {
         engine = new Engine();
         engine.addSystem(new RenderSystem(modelBatch, environment));
-
+        engine.addSystem(new WalkersSystem(modelBatch, environment));
 
         Pool.setEngine(engine);
 

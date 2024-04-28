@@ -79,7 +79,7 @@ public class EntityFactory {
         Vector3 pos = new Vector3(posX, 0, posY);
         Engine engine = Pool.getEngine();
         Entity entity = new Entity();
-        PezzoComponent comp = new PezzoComponent(pos, pezzo);
+        PezzoComponent comp = new PezzoComponent(i,j, pezzo);
         comp.setPosition(pos);
         //comp.setPosition(new Vector3(i * Constants.CELL_SIZE, 0, j * Constants.CELL_SIZE));
         entity.add(comp);
@@ -88,13 +88,4 @@ public class EntityFactory {
         Pool.addInstance(comp);
     }
 
-
-    public static void createPezzo(Vector3 pos, Engine engine, Pezzo pezzo) {
-        Entity entity = new Entity();
-        PezzoComponent comp = new PezzoComponent(pos, pezzo);
-        entity.add(comp);
-        engine.addEntity(entity);
-
-        Pool.addInstance(comp);
-    }
 }

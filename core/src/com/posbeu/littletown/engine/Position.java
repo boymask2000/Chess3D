@@ -7,9 +7,6 @@ import com.posbeu.littletown.engine.player.BoardGDX;
 import java.util.Objects;
 
 public class Position {
-
-
-
     private Pezzo obj = null;
     private int i;
     private int j;
@@ -22,15 +19,15 @@ public class Position {
     }
 
     public Position(int i, int j) {
-        this.i = i;
-        this.j = j;
+        setI(i);
+        setJ(j);
     }
 
 
     public Position(Pezzo obj, int i, int j) {
         this.obj = obj;
-        this.i = i;
-        this.j = j;
+        setI(i);
+        setJ(j);
     }
 
     @Override
@@ -58,7 +55,7 @@ public class Position {
 
     public void setI(int i) {
         this.i = i;
-        floatI= BoardGDX.convertPosToCoord(i);
+        floatI = BoardGDX.convertIPosToCoord(i);
     }
 
     public int getJ() {
@@ -67,7 +64,7 @@ public class Position {
 
     public void setJ(int j) {
         this.j = j;
-        floatJ=BoardGDX.convertPosToCoord(j);
+        floatJ = BoardGDX.convertJPosToCoord(j);
     }
 
     public Pezzo getObj() {
@@ -89,9 +86,11 @@ public class Position {
     public void setFloatJ(float floatJ) {
         this.floatJ = floatJ;
     }
+
     public void setObj(Pezzo obj) {
         this.obj = obj;
     }
+
     @Override
     public String toString() {
         return "Position{" +
