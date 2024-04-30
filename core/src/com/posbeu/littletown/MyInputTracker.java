@@ -27,6 +27,7 @@ public class MyInputTracker implements InputProcessor {
     private Engine engine;
     private ShapeRenderer shapeRenderer;
     private BaseComponent first = null;
+    private CellCursorComponent cellCursorComponent;
 
 
     @Override
@@ -95,7 +96,7 @@ public class MyInputTracker implements InputProcessor {
                 first = null;
 
                 mossePossibili.clear();
-                Pool.getChessEngine().dump();
+             //   Pool.getChessEngine().dump();
             }
             Pool.removeMarkers();
         }
@@ -116,14 +117,16 @@ public class MyInputTracker implements InputProcessor {
 
 
         Mossa response = chessEngine.play(m);
+
+        BoardAligner.align();
         System.out.println("Risposta: " + response);
 
-        PezzoComponent comp = Pool.getPezzocomponentWithPezzo(response.getPezzo());
+      /*  PezzoComponent comp = Pool.getPezzocomponentWithPezzo(response.getPezzo());
         System.out.println(comp);
         if (comp != null) {
             Vector3 dest = BoardGDX.convertToVectorPosition(response.getTo().getI(), response.getTo().getJ());
             comp.setDestination(dest, response.getTo().getI(), response.getTo().getJ());
-        }
+        }*/
     }
 
     private boolean isMossaLegale(BaseComponent p) {
@@ -152,7 +155,6 @@ public class MyInputTracker implements InputProcessor {
         return false;
     }
 
-    CellCursorComponent cellCursorComponent;
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {

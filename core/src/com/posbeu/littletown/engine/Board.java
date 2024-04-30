@@ -15,6 +15,8 @@ import com.posbeu.littletown.engine.pezzi.Torre;
 import java.util.List;
 
 public class Board {
+
+
     private Pezzo[][] board = new Pezzo[8][8];
 
     private Valutatore valutatore;
@@ -138,7 +140,9 @@ public class Board {
             }
         return mossePossibili.getMossePossibili();
     }
-
+    public Pezzo[][] getBoard() {
+        return board;
+    }
     public int valuta(Color col) {
         return valutatore.valuta(col);
     }
