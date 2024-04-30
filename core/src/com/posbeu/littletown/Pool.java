@@ -2,6 +2,8 @@ package com.posbeu.littletown;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.posbeu.littletown.component.BaseComponent;
 import com.posbeu.littletown.component.MarkerComponent;
+import com.posbeu.littletown.component.ModelComponent;
 import com.posbeu.littletown.component.MossaPossibileComponent;
 import com.posbeu.littletown.component.PezzoComponent;
 import com.posbeu.littletown.engine.ChessEngine;
@@ -25,7 +28,7 @@ public class Pool {
     private static FreeTypeFontGenerator generator = null;
     private static BitmapFont genericfont;
     private static Engine engine;
-    private static List<BaseComponent> instances = new ArrayList<>();
+    private static List<Entity> entities = new ArrayList<>();
     private static ButtonScreen buttonScreen;
     private static PerspectiveCamera camera;
     private static ChessEngine chessEngine;
@@ -39,12 +42,12 @@ public class Pool {
     }
 
 
-    public static void addInstance(BaseComponent comp) {
-        instances.add(comp);
+    public static void addEntity(Entity e) {
+        entities.add(e);
     }
 
-    public static List<BaseComponent> getInstances() {
-        return instances;
+    public static List<Entity> getEntities() {
+        return entities;
     }
 
     public static Engine getEngine() {
@@ -59,7 +62,7 @@ public class Pool {
 
     public static void addMarker(MarkerComponent m) {
 
-        addInstance(m);
+        //   addInstance(m);
         Entity entity = new Entity();
         entity.add(m);
         markers.add(entity);
@@ -68,9 +71,10 @@ public class Pool {
 
     public static void addMossaPossibile(MossaPossibileComponent m) {
 
-        addInstance(m);
+
         Entity entity = new Entity();
         entity.add(m);
+        //    addEntity(entity);
         markers.add(entity);//  <----------- attenzionw
         engine.addEntity(entity);
     }
@@ -110,29 +114,67 @@ public class Pool {
     }
 
     public static PezzoComponent getPezzoAtPosition(int i, int j) {
-        System.out.println("Size: " + instances.size());
-        for (BaseComponent c : instances)
-            if (c instanceof PezzoComponent) {
-                if (c.getI() == i && c.getJ() == j) return (PezzoComponent) c;
-            }
+        ImmutableArray<Entity> pezziEntities = engine.getEntitiesFor(
+                Family.all(
+                        PezzoComponent.class
+                ).get());
+        for (int x = 0; x < pezziEntities.size(); x++) {
+            PezzoComponent c =
+                    pezziEntities.get(x).getComponent(PezzoComponent.class);
+            if (c.getI() == i && c.getJ() == j) return c;
+
+        }
         return null;
     }
 
-    public static List<PezzoComponent> getPezzi(){
-        List<PezzoComponent> out=new ArrayList<>();
-        for (BaseComponent c : instances)
-            if (c instanceof PezzoComponent) {
-                out.add((PezzoComponent) c);
-            }
+    public static List<PezzoComponent> getPezzi() {
+        ImmutableArray<Entity> pezziEntities = engine.getEntitiesFor(
+                Family.all(
+                        PezzoComponent.class
+                ).get());
+
+        List<PezzoComponent> out = new ArrayList<>();
+
+        for (int x = 0; x < pezziEntities.size(); x++) {
+            PezzoComponent c =
+                    pezziEntities.get(x).getComponent(PezzoComponent.class);
+            out.add( c);
+
+        }
+
+        return out;
+    }
+    public static List<ModelComponent> getCelle() {
+        ImmutableArray<Entity> celleEntities = engine.getEntitiesFor(
+                Family.all(
+                        ModelComponent.class
+                ).get());
+
+        List<ModelComponent> out = new ArrayList<>();
+
+        for (int x = 0; x < celleEntities.size(); x++) {
+            ModelComponent c =
+                    celleEntities.get(x).getComponent(ModelComponent.class);
+            out.add( c);
+
+        }
+
         return out;
     }
 
     public static PezzoComponent getPezzocomponentWithPezzo(Pezzo p) {
-        for (BaseComponent c : instances)
-            if (c instanceof PezzoComponent) {
-                PezzoComponent pc = (PezzoComponent) c;
-                if (pc.getPezzo() == p) return pc;
-            }
+        ImmutableArray<Entity> pezziEntities = engine.getEntitiesFor(
+                Family.all(
+                        PezzoComponent.class
+                ).get());
+
+        for (int x = 0; x < pezziEntities.size(); x++) {
+            PezzoComponent pc =
+                    pezziEntities.get(x).getComponent(PezzoComponent.class);
+
+            if (pc.getPezzo() == p) return pc;
+        }
+
         return null;
     }
 

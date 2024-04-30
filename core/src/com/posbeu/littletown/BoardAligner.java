@@ -11,7 +11,7 @@ public class BoardAligner {
         Board board = Pool.getChessEngine().getBoard();
         List<PezzoComponent> pezziComps = Pool.getPezzi();
 
-       /* for(PezzoComponent pc: pezziComps){
+       /*for(PezzoComponent pc: pezziComps){
             if( !pezzoInBoard(pc))
         }*/
     }

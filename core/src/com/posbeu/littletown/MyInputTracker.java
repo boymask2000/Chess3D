@@ -202,7 +202,7 @@ public class MyInputTracker implements InputProcessor {
         return null;
     }
 
-    public BaseComponent getObject(int screenX, int screenY) {
+   /* public BaseComponent getObject(int screenX, int screenY) {
         Vector3 click = getPoint(screenX, screenY);
 
         BaseComponent result = null;
@@ -223,15 +223,15 @@ public class MyInputTracker implements InputProcessor {
         }
         return result;
     }
-
+*/
     public ModelComponent getCell(int screenX, int screenY) {
         Vector3 click = getPoint(screenX, screenY);
 
         ModelComponent result = null;
         float distance = 10000f;
-        List<BaseComponent> instances = Pool.getInstances();
-        for (BaseComponent comp : instances) {
-            if (!(comp instanceof ModelComponent)) continue;
+        List<ModelComponent> celle = Pool.getCelle();
+        for (ModelComponent comp : celle) {
+
             //   System.out.println("comp " + comp.getI() + " " + comp.getJ());
             Vector3 position = comp.getPosition();
 
@@ -252,9 +252,9 @@ public class MyInputTracker implements InputProcessor {
 
         PezzoComponent result = null;
         float distance = 10000f;
-        List<BaseComponent> instances = Pool.getInstances();
-        for (BaseComponent comp : instances) {
-            if (!(comp instanceof PezzoComponent)) continue;
+        List<PezzoComponent> pezzi = Pool.getPezzi();
+        for (PezzoComponent comp : pezzi) {
+
             //   System.out.println("comp " + comp.getI() + " " + comp.getJ());
             Vector3 position = comp.getPosition();
 

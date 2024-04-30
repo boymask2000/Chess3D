@@ -85,8 +85,8 @@ public class ButtonScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                System.out.println("ddd");
-                BaseComponent ii = Pool.getInstances().get(0);
-                ii.getInstance().transform.trn(new Vector3(10,10,10));
+               /* BaseComponent ii = Pool.getInstances().get(0);
+                ii.getInstance().transform.trn(new Vector3(10,10,10));*/
             }
         });
         /*

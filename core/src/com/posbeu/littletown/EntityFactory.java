@@ -50,7 +50,7 @@ public class EntityFactory {
 
         entity.add(modelComponent);
 
-        Pool.addInstance(modelComponent);
+     //   Pool.addInstance(modelComponent);
         Engine engine = Pool.getEngine();
         engine.addEntity(entity);
     }
@@ -73,7 +73,7 @@ public class EntityFactory {
 
         entity.add(cellCursorComponent);
 
-        Pool.addInstance(cellCursorComponent);
+ //       Pool.addInstance(cellCursorComponent);
         Engine engine = Pool.getEngine();
         engine.addEntity(entity);
 
@@ -97,7 +97,7 @@ public class EntityFactory {
         entity.add(comp);
         engine.addEntity(entity);
 
-        Pool.addInstance(comp);
+ //       Pool.addInstance(comp);
     }
 
 }
