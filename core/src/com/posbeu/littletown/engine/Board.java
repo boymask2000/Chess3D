@@ -26,14 +26,25 @@ public class Board {
 
         valutatore = new Valutatore(this);
     }
-
+    public void dump() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Pezzo p = board[i][j];
+                if (p == null)
+                    System.out.print("  ");
+                else
+                    System.out.print(p.getCode());
+            } System.out.println();
+        }
+        valutatore = new Valutatore(this);
+    }
     public Pezzo getPezzo(int i, int j) {
         if (i < 0 || i > 7) return null;
         if (j < 0 || j > 7) return null;
         return board[i][j];
     }
 
-    public Pezzo getPezzo(Position pos) {
+    public Pezzo getPezzo(BoardPosition pos) {
         return board[pos.getI()][pos.getJ()];
     }
 
@@ -41,7 +52,7 @@ public class Board {
         board[i][j] = p;
     }
 
-    public void setPezzo(Position pos, Pezzo p) {
+    public void setPezzo(BoardPosition pos, Pezzo p) {
         board[pos.getI()][pos.getJ()] = p;
     }
 
@@ -68,7 +79,7 @@ public class Board {
     }
 
     public boolean isReMinacciato(Mossa m, Color color) {
-        Position p = cercaRe(color);
+        BoardPosition p = cercaRe(color);
         boolean b = isCellaMinacciata(p.getI(), p.getJ(), color);
 
         return b;
@@ -86,12 +97,12 @@ public class Board {
 
     }
 
-    public Position cercaRe(Color color) {
+    public BoardPosition cercaRe(Color color) {
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++) {
                 Pezzo p = getPezzo(i, j);
                 if (p != null && p.getColore() == color && p.getPezzoEnum() == PezziEnum.RE)
-                    return new Position(i, j);
+                    return new BoardPosition(i, j);
             }
         return null;
     }

@@ -25,9 +25,9 @@ public class MossaBuilder {
         if (p.getColore() != playerColor) return null;
         if (p.getPezzoEnum() == PezziEnum.RE) {
             if (Math.abs(from_i - to_i) == 2)
-                return new Arrocco(p, new Position(from_i, from_j), new Position(to_i, to_j));
+                return new Arrocco(p, new BoardPosition(from_i, from_j), new BoardPosition(to_i, to_j));
         }
-        return new Mossa(p, new Position(from_i, from_j), new Position(to_i, to_j));
+        return new Mossa(p, new BoardPosition(from_i, from_j), new BoardPosition(to_i, to_j));
     }
 
 }

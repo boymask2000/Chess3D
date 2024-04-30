@@ -1,14 +1,12 @@
 package com.posbeu.littletown.engine.pezzi;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.posbeu.littletown.engine.MossePossibili;
 import com.posbeu.littletown.engine.mosse.Arrocco;
 import com.posbeu.littletown.engine.mosse.Mossa;
 import com.posbeu.littletown.engine.Board;
-import com.posbeu.littletown.engine.Position;
+import com.posbeu.littletown.engine.BoardPosition;
 
 public class Re extends Pezzo {
     public Re(Color colore) {
@@ -27,7 +25,7 @@ public class Re extends Pezzo {
                 Pezzo p = board.getPezzo(i, j);
                 if (p != null && p.getColore() == this.getColore()) continue;
 
-                Mossa m = new Mossa(this, new Position(x, y), new Position(i, j));
+                Mossa m = new Mossa(this, new BoardPosition(x, y), new BoardPosition(i, j));
 
                 mossePossibili.addMossa(m);
             }
@@ -51,7 +49,7 @@ public class Re extends Pezzo {
         for (int i = x - 1; i > 0; i++)
             if (!board.isEmpty(i, y) || board.isCellaMinacciata(i, y, getColore())) return;
 
-        Arrocco m = new Arrocco(this, new Position(x,y), new Position(x-2,y));
+        Arrocco m = new Arrocco(this, new BoardPosition(x,y), new BoardPosition(x-2,y));
         mossePossibili.addMossa(m);
     }
 
@@ -65,7 +63,7 @@ public class Re extends Pezzo {
         for (int i = x + 1; i < 7; i++)
             if (!board.isEmpty(i, y) || board.isCellaMinacciata(i, y, getColore())) return;
 
-        Arrocco m = new Arrocco(this, new Position(x,y), new Position(x+2,y));
+        Arrocco m = new Arrocco(this, new BoardPosition(x,y), new BoardPosition(x+2,y));
        // System.out.println(m);
         mossePossibili.addMossa(m);
     }

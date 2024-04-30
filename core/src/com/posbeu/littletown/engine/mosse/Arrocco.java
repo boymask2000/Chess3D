@@ -3,12 +3,12 @@ package com.posbeu.littletown.engine.mosse;
 
 import com.posbeu.littletown.engine.pezzi.Pezzo;
 import com.posbeu.littletown.engine.Board;
-import com.posbeu.littletown.engine.Position;
+import com.posbeu.littletown.engine.BoardPosition;
 
 public class Arrocco extends Mossa {
     private Mossa mossaTorre;
 
-    public Arrocco(Pezzo p, Position from, Position to) {
+    public Arrocco(Pezzo p, BoardPosition from, BoardPosition to) {
         super(p, from, to);
     }
 
@@ -20,7 +20,7 @@ public class Arrocco extends Mossa {
             //Arrocco a destra
             Pezzo p = board.getPezzo(7, getFrom().getJ());
             if (p == null) return;
-            mossaTorre = new Mossa(p, new Position(7, getFrom().getJ()), new Position(5, getFrom().getJ()));
+            mossaTorre = new Mossa(p, new BoardPosition(7, getFrom().getJ()), new BoardPosition(5, getFrom().getJ()));
             mossaTorre.esegui(board, simulate);
         }
     }

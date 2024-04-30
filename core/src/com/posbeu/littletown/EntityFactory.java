@@ -15,13 +15,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
 import com.posbeu.littletown.component.*;
-import com.posbeu.littletown.engine.pezzi.Color;
 import com.posbeu.littletown.engine.pezzi.Pezzo;
 import com.posbeu.littletown.models.CellBianca;
 import com.posbeu.littletown.models.CellNera;
-
-
-import java.util.List;
 
 public class EntityFactory {
 
@@ -40,8 +36,8 @@ public class EntityFactory {
                         | VertexAttributes.Usage.TextureCoordinates);
     }
 
-    public static void createStaticEntity(Model model, float x, float y,
-                                          float z) {
+    private static void createStaticEntity(Model model, float x, float y,
+                                           float z, int i, int j) {
         final BoundingBox boundingBox = new BoundingBox();
         model.calculateBoundingBox(boundingBox);
 
@@ -49,12 +45,14 @@ public class EntityFactory {
         ModelComponent modelComponent = new ModelComponent(model, x, y,
                 z);
 
+        modelComponent.setI(i);
+        modelComponent.setJ(j);
+
         entity.add(modelComponent);
 
         Pool.addInstance(modelComponent);
         Engine engine = Pool.getEngine();
         engine.addEntity(entity);
-        //    return entity;
     }
 
     public static void createCell(int i, int j) {
@@ -66,22 +64,36 @@ public class EntityFactory {
         float posX = i * consta + Constants.CELL_SIZE;
         float posY = j * Constants.CELL_SIZE + Constants.CELL_SIZE;
 
-        createStaticEntity(m, posX, -1, posY);
-        //  createStaticEntity(m, i * Constants.CELL_SIZE, -1, j * Constants.CELL_SIZE);
+        createStaticEntity(m, posX, -1, posY, i, j);
     }
 
+    public static CellCursorComponent createCellCursor(int i, int j) {
+        Entity entity = new Entity();
+        CellCursorComponent cellCursorComponent = new CellCursorComponent(i, j);
+
+        entity.add(cellCursorComponent);
+
+        Pool.addInstance(cellCursorComponent);
+        Engine engine = Pool.getEngine();
+        engine.addEntity(entity);
+
+        return cellCursorComponent;
+    }
 
     public static void createPezzo(int i, int j, Pezzo pezzo) {
+        Pool.getChessEngine().setPezzo(pezzo, i, j);
+
         float consta = Constants.CELL_SIZE;// 6.5f;
         float posX = i * consta + Constants.CELL_SIZE;
         float posY = j * Constants.CELL_SIZE + Constants.CELL_SIZE;
 
         Vector3 pos = new Vector3(posX, 0, posY);
         Engine engine = Pool.getEngine();
-        Entity entity = new Entity();
-        PezzoComponent comp = new PezzoComponent(i,j, pezzo);
+
+        PezzoComponent comp = new PezzoComponent(i, j, pezzo);
         comp.setPosition(pos);
         //comp.setPosition(new Vector3(i * Constants.CELL_SIZE, 0, j * Constants.CELL_SIZE));
+        Entity entity = new Entity();
         entity.add(comp);
         engine.addEntity(entity);
 

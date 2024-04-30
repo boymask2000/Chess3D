@@ -3,13 +3,10 @@ package com.posbeu.littletown.engine.pezzi;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
-import com.badlogic.gdx.utils.JsonReader;
 import com.posbeu.littletown.engine.Board;
 import com.posbeu.littletown.engine.MossePossibili;
-import com.posbeu.littletown.engine.Position;
+import com.posbeu.littletown.engine.BoardPosition;
 
 public class Torre extends Pezzo {
     public Torre(Color colore) {
@@ -19,7 +16,7 @@ public class Torre extends Pezzo {
 
     @Override
     public void getMossePossibili(int i, int j, Board board, MossePossibili mossePossibili) {
-        Position from = new Position(i, j);
+        BoardPosition from = new BoardPosition(i, j);
 
         for (int dx = -1; dx < 2; dx++) {
 
@@ -30,7 +27,7 @@ public class Torre extends Pezzo {
                 while (true) {
                     ki += dx;
                     kj += dy;
-                    boolean proc = buildMossa(from, new Position(ki, kj), board, mossePossibili);
+                    boolean proc = buildMossa(from, new BoardPosition(ki, kj), board, mossePossibili);
                     if (!proc) break;
                 }
             }

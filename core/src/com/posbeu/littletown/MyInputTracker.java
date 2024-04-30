@@ -9,21 +9,25 @@ import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.posbeu.littletown.component.BaseComponent;
+import com.posbeu.littletown.component.CellCursorComponent;
 import com.posbeu.littletown.component.MarkerComponent;
+import com.posbeu.littletown.component.ModelComponent;
 import com.posbeu.littletown.component.MossaPossibileComponent;
 import com.posbeu.littletown.component.PezzoComponent;
+import com.posbeu.littletown.engine.BoardPosition;
+import com.posbeu.littletown.engine.ChessEngine;
 import com.posbeu.littletown.engine.mosse.Mossa;
 import com.posbeu.littletown.engine.pezzi.Pezzo;
+import com.posbeu.littletown.engine.player.BoardGDX;
 
 import java.util.List;
 
 public class MyInputTracker implements InputProcessor {
-    private Vector3 touchPos = new Vector3();
     private PerspectiveCamera camera;
     private Engine engine;
     private ShapeRenderer shapeRenderer;
     private BaseComponent first = null;
-    private BaseComponent second = null;
+
 
     @Override
     public boolean keyDown(int keycode) {
@@ -39,45 +43,96 @@ public class MyInputTracker implements InputProcessor {
     public boolean keyTyped(char character) {
         return false;
     }
-    PezzoComponent pezzoComp;
+
+    private PezzoComponent pezzoComp;
+    private List<Mossa> mossePossibili;
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        touchPos = getPoint(screenX, screenY);
-        BaseComponent selected = getObject(screenX, screenY);
-        if (selected == null) return false;
-        MarkerComponent marker = new MarkerComponent(selected.getPosition());
-        Pool.addMarker(marker);
-        if (second != null) {
-            Pool.removeMarkers();
-            first = null;
-            second = null;
-        }
-
-        System.out.println(selected);
 
         if (first == null) {
-            if (selected instanceof PezzoComponent) {
-                 pezzoComp = (PezzoComponent) selected;
-                Pezzo pezzo = pezzoComp.getPezzo();
-                List<Mossa> ll = Pool.getChessEngine().getMosse(pezzo, pezzoComp.getI(), pezzoComp.getJ());
-                for (Mossa m : ll) {
-                    System.out.println(m);
-                    Vector3 v = new Vector3(m.getTo().getFloatI(), 0, m.getTo().getFloatJ());
-                    MossaPossibileComponent mk = new MossaPossibileComponent(v);
-                    Pool.addMossaPossibile(mk);
-                }
+            PezzoComponent selected = getPezzo(screenX, screenY);
+            if (selected == null) {
+                Pool.removeMarkers();
+                first = null;
+
+                return false;
+            }
+
+
+            pezzoComp = selected;
+            Pezzo pezzo = pezzoComp.getPezzo();
+            mossePossibili = Pool.getChessEngine().getMosse(pezzo, pezzoComp.getI(), pezzoComp.getJ());
+            for (Mossa m : mossePossibili) {
+                MossaPossibileComponent mk = new MossaPossibileComponent(m);
+                Pool.addMossaPossibile(mk);
+            }
+            if (mossePossibili.size() == 0) {
+                Pool.removeMarkers();
+                first = null;
+
+                return false;
             }
             first = selected;
         } else {
-            if (first != selected) {
+            ModelComponent selected = getCell(screenX, screenY);
+            if (sameCell(first, selected)) {
+                Pool.removeMarkers();
+                first = null;
 
-
-                pezzoComp.setDestination(selected.getPosition());
-
-                second = selected;
+                return false;
             }
-        }
+            if (!isMossaLegale(selected)) {
+                Pool.removeMarkers();
+                first = null;
 
+                return false;
+            }
+            if (pezzoComp != null) {
+                eseguiMossaAlloChessEngine(selected);
+                pezzoComp.setDestination(selected);
+
+                first = null;
+
+                mossePossibili.clear();
+                Pool.getChessEngine().dump();
+            }
+            Pool.removeMarkers();
+        }
+        return true;
+    }
+
+    private boolean sameCell(BaseComponent a, ModelComponent b) {
+        return a.getI() == b.getI() && a.getJ() == b.getJ();
+    }
+
+    private void eseguiMossaAlloChessEngine(BaseComponent selected) {
+        BoardPosition from = new BoardPosition(pezzoComp.getPezzo(), first.getI(), first.getJ());
+        BoardPosition to = new BoardPosition(pezzoComp.getPezzo(), selected.getI(), selected.getJ());
+        Mossa m = new Mossa(pezzoComp.getPezzo(), from, to);
+        System.out.println(m);
+
+        ChessEngine chessEngine = Pool.getChessEngine();
+
+
+        Mossa response = chessEngine.play(m);
+        System.out.println("Risposta: " + response);
+
+        PezzoComponent comp = Pool.getPezzocomponentWithPezzo(response.getPezzo());
+        System.out.println(comp);
+        if (comp != null) {
+            Vector3 dest = BoardGDX.convertToVectorPosition(response.getTo().getI(), response.getTo().getJ());
+            comp.setDestination(dest, response.getTo().getI(), response.getTo().getJ());
+        }
+    }
+
+    private boolean isMossaLegale(BaseComponent p) {
+        int i = p.getI();
+        int j = p.getJ();
+        if (mossePossibili == null) return false;
+
+        for (Mossa m : mossePossibili)
+            if (m.getTo().getI() == i && m.getTo().getJ() == j) return true;
         return false;
     }
 
@@ -97,12 +152,20 @@ public class MyInputTracker implements InputProcessor {
         return false;
     }
 
+    CellCursorComponent cellCursorComponent;
+
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
 
-        Vector3 pos = getPoint(screenX, screenY);
+        ModelComponent cell = getCell(screenX, screenY);
+        // System.out.println(cell.getI()+" "+cell.getJ());
 
-        return false;
+        if (cellCursorComponent == null)
+            cellCursorComponent = EntityFactory.createCellCursor(cell.getI(), cell.getJ());
+
+        cellCursorComponent.setPos(cell.getI(), cell.getJ());
+
+        return true;
     }
 
     @Override
@@ -133,7 +196,7 @@ public class MyInputTracker implements InputProcessor {
         Vector3 intersection = new Vector3();
         if (Intersector.intersectRayPlane(pickRay, plane, intersection)) {
             // The ray has hit the plane, intersection is the point it hit
-            System.out.println(intersection);
+
             return intersection;
         }
         return null;
@@ -141,17 +204,19 @@ public class MyInputTracker implements InputProcessor {
 
     public BaseComponent getObject(int screenX, int screenY) {
         Vector3 click = getPoint(screenX, screenY);
+
         BaseComponent result = null;
         float distance = 10000f;
         List<BaseComponent> instances = Pool.getInstances();
         for (BaseComponent comp : instances) {
-
+            //   System.out.println("comp " + comp.getI() + " " + comp.getJ());
             Vector3 position = comp.getPosition();
 
             float dist2 = click.dst2(position);
-            if (dist2 > 40) continue;
+
             if (dist2 < distance) {
                 result = comp;
+                //   System.out.println("res "+result.getI()+" "+result.getJ()+ " "+dist2);
                 distance = dist2;
             }
 
@@ -159,27 +224,49 @@ public class MyInputTracker implements InputProcessor {
         return result;
     }
 
-    public BaseComponent getObject5(int screenX, int screenY) {
+    public ModelComponent getCell(int screenX, int screenY) {
         Vector3 click = getPoint(screenX, screenY);
-        BaseComponent result = null;
-        float distance = -1;
+
+        ModelComponent result = null;
+        float distance = 10000f;
         List<BaseComponent> instances = Pool.getInstances();
         for (BaseComponent comp : instances) {
-
+            if (!(comp instanceof ModelComponent)) continue;
+            //   System.out.println("comp " + comp.getI() + " " + comp.getJ());
             Vector3 position = comp.getPosition();
-            //      position.y = 0;
-//            instance.transform.getTranslation(position);
-//            position.add(center);
-            float dist2 = click.dst2(position);
-            if (distance >= 0f && dist2 > distance) continue;
-            //    System.out.println(comp+ " "+dist2);
-            if (dist2 > 40) continue;
 
-            result = comp;
-            distance = dist2;
+            float dist2 = click.dst2(position);
+
+            if (dist2 < distance) {
+                result = (ModelComponent) comp;
+                //   System.out.println("res "+result.getI()+" "+result.getJ()+ " "+dist2);
+                distance = dist2;
+            }
 
         }
         return result;
     }
 
+    public PezzoComponent getPezzo(int screenX, int screenY) {
+        Vector3 click = getPoint(screenX, screenY);
+
+        PezzoComponent result = null;
+        float distance = 10000f;
+        List<BaseComponent> instances = Pool.getInstances();
+        for (BaseComponent comp : instances) {
+            if (!(comp instanceof PezzoComponent)) continue;
+            //   System.out.println("comp " + comp.getI() + " " + comp.getJ());
+            Vector3 position = comp.getPosition();
+
+            float dist2 = click.dst2(position);
+
+            if (dist2 < distance) {
+                result = (PezzoComponent) comp;
+                //   System.out.println("res "+result.getI()+" "+result.getJ()+ " "+dist2);
+                distance = dist2;
+            }
+
+        }
+        return result;
+    }
 }

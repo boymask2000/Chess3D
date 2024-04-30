@@ -8,12 +8,11 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
-import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.utils.JsonReader;
 import com.posbeu.littletown.engine.Board;
 import com.posbeu.littletown.engine.MossePossibili;
-import com.posbeu.littletown.engine.Position;
+import com.posbeu.littletown.engine.BoardPosition;
 import com.posbeu.littletown.engine.mosse.Mossa;
 
 public abstract class Pezzo {
@@ -60,7 +59,7 @@ public abstract class Pezzo {
 
     public abstract void getMossePossibili(int i, int j, Board board, MossePossibili mossePossibili);
 
-    protected boolean buildMossa(Position from, Position to, Board b, MossePossibili mossePossibili) {
+    protected boolean buildMossa(BoardPosition from, BoardPosition to, Board b, MossePossibili mossePossibili) {
         int i = to.getI();
         int j = to.getJ();
         if (i < 0 || i > 7) return false;
@@ -93,7 +92,7 @@ public abstract class Pezzo {
     ;
 
     protected Model getModel(String fName) {
-        System.out.println("Modello "+fName);
+
         String fileName = fName;
 
         if (getColore() == Color.BIANCO)

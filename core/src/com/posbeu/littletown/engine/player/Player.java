@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Player {
     private static final int MAXVAL = 1000000;
-    private static int maxDepth = 10;
+    private static int maxDepth = 4;
 
     static int counter = 0;
 

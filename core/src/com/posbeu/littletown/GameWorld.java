@@ -48,6 +48,8 @@ public class GameWorld {
     private MyInputTracker inputProcessor;
 
     public GameWorld() {
+        ChessEngine chessEngine = new ChessEngine();
+        Pool.setChessEngine(chessEngine);
 
         initEnvironment();
         initModelBatch();
@@ -56,9 +58,6 @@ public class GameWorld {
         addEntities();
 
         initPezzi();
-
-        ChessEngine chessEngine = new ChessEngine();
-        Pool.setChessEngine(chessEngine);
     }
 
     private void initPezzi() {

@@ -19,6 +19,7 @@ import com.posbeu.littletown.component.*;
 
 public class RenderSystem extends EntitySystem {
     private ImmutableArray<Entity> pezziEntities;
+    private ImmutableArray<Entity> cellCursorEntities;
     private ImmutableArray<Entity> modelEntities;
     private ImmutableArray<Entity> markersEntities;
     private ImmutableArray<Entity> mossePossibiliEntities;
@@ -34,7 +35,7 @@ public class RenderSystem extends EntitySystem {
     }
 
     public void addedToEngine(Engine e) {
-        this.engine=e;
+        this.engine = e;
         pezziEntities =
                 e.getEntitiesFor(
                         Family.all(
@@ -45,6 +46,12 @@ public class RenderSystem extends EntitySystem {
     }
 
     public void update(float delta) {
+        cellCursorEntities =
+                engine.getEntitiesFor(
+                        Family.all(
+                                CellCursorComponent.class
+                        ).get());
+
         pezziEntities =
                 engine.getEntitiesFor(
                         Family.all(
@@ -62,12 +69,18 @@ public class RenderSystem extends EntitySystem {
                                 MarkerComponent.class
                         ).get());
 
-        mossePossibiliEntities=
+        mossePossibiliEntities =
                 engine.getEntitiesFor(
                         Family.all(
                                 MossaPossibileComponent.class
                         ).get());
 
+        for (int i = 0; i < cellCursorEntities.size(); i++) {
+            CellCursorComponent mod =
+                    cellCursorEntities.get(i).getComponent(CellCursorComponent.class);
+            batch.render(mod.instance, environment);
+
+        }
 
         for (int i = 0; i < mossePossibiliEntities.size(); i++) {
             MossaPossibileComponent mod =

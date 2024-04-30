@@ -6,7 +6,7 @@ import com.posbeu.littletown.engine.player.BoardGDX;
 
 import java.util.Objects;
 
-public class Position {
+public class BoardPosition {
     private Pezzo obj = null;
     private int i;
     private int j;
@@ -14,17 +14,17 @@ public class Position {
     private float floatI;
     private float floatJ;
 
-    public Position() {
+    public BoardPosition() {
 
     }
 
-    public Position(int i, int j) {
+    public BoardPosition(int i, int j) {
         setI(i);
         setJ(j);
     }
 
 
-    public Position(Pezzo obj, int i, int j) {
+    public BoardPosition(Pezzo obj, int i, int j) {
         this.obj = obj;
         setI(i);
         setJ(j);
@@ -34,7 +34,7 @@ public class Position {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Position position = (Position) o;
+        BoardPosition position = (BoardPosition) o;
         return getI() == position.getI() && getJ() == position.getJ();
     }
 

@@ -13,9 +13,6 @@ import com.posbeu.littletown.systems.PathBuilder;
 
 public class PezzoComponent extends BaseComponent implements Component {
 
-    private int i;
-    private int j;
-
     private Pezzo pezzo;
 
     private final int STATO_IDLE = 0;
@@ -24,14 +21,12 @@ public class PezzoComponent extends BaseComponent implements Component {
     private int currentState = STATO_IDLE;
     private PathBuilder pathBuilder;
 
-
     private Vector3 destination;
 
     @Override
     public void update(float delta) {
         if (destination == null) return;
         if (currentState == STATO_IDLE) {
-
 
             pathBuilder = new PathBuilder(getPosition(), destination);
 
@@ -49,20 +44,19 @@ public class PezzoComponent extends BaseComponent implements Component {
             }
             setPosition(next);
             instance.transform.setTranslation(next);
-
         }
     }
 
     @Override
     public String toString() {
         return "PezzoComponent{" +
-                "pezzo=" + pezzo +
+                "pezzo=" + pezzo +" ("+ getI()+","+getJ()+" )"+
                 '}';
     }
 
     public PezzoComponent(int i, int j, Pezzo pezzo) {
-        this.i = i;
-        this.j = j;
+        setI(i);
+        setJ(j);
         float consta = Constants.CELL_SIZE;// 6.5f;
         float posX = i * consta + Constants.CELL_SIZE;
         float posY = j * Constants.CELL_SIZE + Constants.CELL_SIZE;
@@ -107,15 +101,15 @@ public class PezzoComponent extends BaseComponent implements Component {
         return pezzo;
     }
 
-    public int getI() {
-        return i;
-    }
 
-    public void setDestination(Vector3 destination) {
-        this.destination = destination;
+    public void setDestination(BaseComponent c) {
+        this.destination = c.getPosition();
+        setI(c.getI());
+        setJ(c.getJ());
     }
-
-    public int getJ() {
-        return j;
+    public void setDestination(Vector3 pos, int i, int j) {
+        this.destination = pos;
+        setI(i);
+        setJ(j);
     }
 }

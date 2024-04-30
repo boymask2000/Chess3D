@@ -12,12 +12,22 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.posbeu.littletown.Constants;
+import com.posbeu.littletown.engine.mosse.Mossa;
 
 public class MossaPossibileComponent extends BaseComponent implements Component {
-    public MossaPossibileComponent(Vector3 pos) {
+   /* public MossaPossibileComponent(Vector3 pos) {
         this.position = pos;
         this.instance = new ModelInstance(getModel(), new
                 Matrix4().setToTranslation(pos.x, pos.y, pos.z));
+    }*/
+
+    public MossaPossibileComponent(Mossa m) {
+        Vector3 v = new Vector3(m.getTo().getFloatI(), 0, m.getTo().getFloatJ());
+        this.position = v;
+        setI(m.getTo().getI());
+        setJ(m.getTo().getJ());
+        this.instance = new ModelInstance(getModel(), new
+                Matrix4().setToTranslation(v.x, v.y, v.z));
     }
 
     public Model getModel() {

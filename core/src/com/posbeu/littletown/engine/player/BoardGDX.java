@@ -2,9 +2,10 @@ package com.posbeu.littletown.engine.player;
 
 import com.badlogic.gdx.Gdx;
 
+import com.badlogic.gdx.math.Vector3;
 import com.posbeu.littletown.Constants;
 import com.posbeu.littletown.engine.Board;
-import com.posbeu.littletown.engine.Position;
+import com.posbeu.littletown.engine.BoardPosition;
 
 public class BoardGDX {
 
@@ -17,7 +18,7 @@ public class BoardGDX {
         width = Gdx.graphics.getWidth();
     }
 
-    public static Position getPezzoActorInPosition(int screenX, int screenY) {
+    public static BoardPosition getPezzoActorInPosition(int screenX, int screenY) {
       //  System.out.println(screenX + " " + screenY);
         int y = height - screenY;
 
@@ -25,7 +26,7 @@ public class BoardGDX {
         int i = screenX / size;
         int j = y / size;
       //  System.out.println(i + " " + j);
-        return new Position(board.getPezzo(i, j), i, j);
+        return new BoardPosition(board.getPezzo(i, j), i, j);
 
     }
 
@@ -49,7 +50,14 @@ public class BoardGDX {
         return i * size;*/
     }
 
-    public static Position convertToFloatPos(int i, int j) {
+    public static Vector3 convertToVectorPosition(int i, int j){
+        float posX = convertIPosToCoord(i);
+        float posY = convertJPosToCoord(j);
+
+        return new Vector3(posX,0,posY);
+    }
+
+    public static BoardPosition convertToFloatPos(int i, int j) {
 
         float posX = convertIPosToCoord(i);
         float posY = convertJPosToCoord(j);
@@ -57,15 +65,15 @@ public class BoardGDX {
 /*        int size = height / 8;
         float posX = size * i;
         float posY = size * j;*/
-        Position p = new Position();
+        BoardPosition p = new BoardPosition();
         p.setJ(j);
         p.setI(i);
         p.setFloatI(posX);
         p.setFloatJ(posY);
         return p;
     }
-    public static Position convertToFloatPos(Position p) {
-        Position out= convertToFloatPos(p.getI(), p.getJ());
+    public static BoardPosition convertToFloatPos(BoardPosition p) {
+        BoardPosition out= convertToFloatPos(p.getI(), p.getJ());
         out.setObj(p.getObj());
         return out;
 

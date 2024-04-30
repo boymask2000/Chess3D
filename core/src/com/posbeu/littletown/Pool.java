@@ -12,7 +12,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.posbeu.littletown.component.BaseComponent;
 import com.posbeu.littletown.component.MarkerComponent;
 import com.posbeu.littletown.component.MossaPossibileComponent;
+import com.posbeu.littletown.component.PezzoComponent;
 import com.posbeu.littletown.engine.ChessEngine;
+import com.posbeu.littletown.engine.pezzi.Pezzo;
 
 
 import java.util.ArrayList;
@@ -96,6 +98,7 @@ public class Pool {
             engine.removeEntity(m);
 
         }
+        markers.clear();
     }
 
     public static void setChessEngine(ChessEngine chessEngine) {
@@ -104,6 +107,33 @@ public class Pool {
 
     public static ChessEngine getChessEngine() {
         return chessEngine;
+    }
+
+    public static PezzoComponent getPezzoAtPosition(int i, int j) {
+        System.out.println("Size: " + instances.size());
+        for (BaseComponent c : instances)
+            if (c instanceof PezzoComponent) {
+                if (c.getI() == i && c.getJ() == j) return (PezzoComponent) c;
+            }
+        return null;
+    }
+
+    public static List<PezzoComponent> getPezzi(){
+        List<PezzoComponent> out=new ArrayList<>();
+        for (BaseComponent c : instances)
+            if (c instanceof PezzoComponent) {
+                out.add((PezzoComponent) c);
+            }
+        return out;
+    }
+
+    public static PezzoComponent getPezzocomponentWithPezzo(Pezzo p) {
+        for (BaseComponent c : instances)
+            if (c instanceof PezzoComponent) {
+                PezzoComponent pc = (PezzoComponent) c;
+                if (pc.getPezzo() == p) return pc;
+            }
+        return null;
     }
 
 }

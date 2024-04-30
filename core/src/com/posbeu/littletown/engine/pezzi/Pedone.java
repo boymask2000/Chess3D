@@ -6,7 +6,7 @@ import com.posbeu.littletown.engine.ChessEngine;
 import com.posbeu.littletown.engine.mosse.Mossa;
 import com.posbeu.littletown.engine.Board;
 import com.posbeu.littletown.engine.MossePossibili;
-import com.posbeu.littletown.engine.Position;
+import com.posbeu.littletown.engine.BoardPosition;
 
 public class Pedone extends Pezzo {
 
@@ -18,25 +18,25 @@ public class Pedone extends Pezzo {
     @Override
     public void getMossePossibili(int i, int j, Board board, MossePossibili mossePossibili) {
 
-        Position from = new Position(i, j);
+        BoardPosition from = new BoardPosition(i, j);
         int fact = 1;
         if (getColore() == Color.NERO) fact = -1;
 
         if (j + fact * 2 >= 0 && j + fact * 2 < 8)
             if (!isAlreadyMoved() && board.getPezzo(i, j + fact * 2) == null) {
-                Mossa m = new Mossa(this, from, new Position(i, j + fact * 2));
+                Mossa m = new Mossa(this, from, new BoardPosition(i, j + fact * 2));
                 mossePossibili.addMossa(m);
             }
         if (j + fact >= 0 && j + fact < 8)
             if (board.getPezzo(i, j + fact) == null) {
-                Mossa m = new Mossa(this, from, new Position(i, j + fact));
+                Mossa m = new Mossa(this, from, new BoardPosition(i, j + fact));
                 mossePossibili.addMossa(m);
             }
         if (i > 0) {
             Pezzo pezzo = board.getPezzo(i - 1, j + fact);
             if (pezzo != null) {
                 if (pezzo.getColore() == ChessEngine.avversario(getColore())) {
-                    Mossa m = new Mossa(this, from, new Position(i - 1, j + fact));
+                    Mossa m = new Mossa(this, from, new BoardPosition(i - 1, j + fact));
                     mossePossibili.addMossa(m);
                 }
             }
@@ -45,7 +45,7 @@ public class Pedone extends Pezzo {
             Pezzo pezzo = board.getPezzo(i + 1, j + fact);
             if (pezzo != null) {
                 if (pezzo.getColore() == ChessEngine.avversario(getColore())) {
-                    Mossa m = new Mossa(this, from, new Position(i + 1, j + fact));
+                    Mossa m = new Mossa(this, from, new BoardPosition(i + 1, j + fact));
 
                     mossePossibili.addMossa(m);
                 }

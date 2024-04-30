@@ -1,12 +1,10 @@
 package com.posbeu.littletown.engine.pezzi;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.posbeu.littletown.engine.Board;
 import com.posbeu.littletown.engine.MossePossibili;
-import com.posbeu.littletown.engine.Position;
+import com.posbeu.littletown.engine.BoardPosition;
 
 public class Cavallo extends Pezzo {
     public Cavallo(Color colore) {
@@ -16,16 +14,16 @@ public class Cavallo extends Pezzo {
     @Override
     public void getMossePossibili(int i, int j, Board board, MossePossibili mossePossibili) {
 
-        Position from = new Position(i, j);
-        buildMossa(from, new Position(i + 1, j + 2), board, mossePossibili);
-        buildMossa(from, new Position(i + 1, j - 2), board, mossePossibili);
-        buildMossa(from, new Position(i - 1, j + 2), board, mossePossibili);
-        buildMossa(from, new Position(i - 1, j - 2), board, mossePossibili);
+        BoardPosition from = new BoardPosition(i, j);
+        buildMossa(from, new BoardPosition(i + 1, j + 2), board, mossePossibili);
+        buildMossa(from, new BoardPosition(i + 1, j - 2), board, mossePossibili);
+        buildMossa(from, new BoardPosition(i - 1, j + 2), board, mossePossibili);
+        buildMossa(from, new BoardPosition(i - 1, j - 2), board, mossePossibili);
 
-        buildMossa(from, new Position(i + 2, j + 1), board, mossePossibili);
-        buildMossa(from, new Position(i + 2, j - 1), board, mossePossibili);
-        buildMossa(from, new Position(i - 2, j + 1), board, mossePossibili);
-        buildMossa(from, new Position(i - 2, j - 1), board, mossePossibili);
+        buildMossa(from, new BoardPosition(i + 2, j + 1), board, mossePossibili);
+        buildMossa(from, new BoardPosition(i + 2, j - 1), board, mossePossibili);
+        buildMossa(from, new BoardPosition(i - 2, j + 1), board, mossePossibili);
+        buildMossa(from, new BoardPosition(i - 2, j - 1), board, mossePossibili);
 
     }
 

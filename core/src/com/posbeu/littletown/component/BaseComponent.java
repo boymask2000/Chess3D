@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 
 public class BaseComponent implements Component {
+    private int i;
+
+    private int j;
+
     public ModelInstance instance;
 
     protected Vector3 position;
@@ -40,4 +44,19 @@ public class BaseComponent implements Component {
     }
 
     public void update(float delta){}
+    public int getI() {
+        return i;
+    }
+
+    public void setI(int i) {
+        this.i = i;
+    }
+
+    public int getJ() {
+        return j;
+    }
+
+    public void setJ(int j) {
+        this.j = j;
+    }
 }

@@ -4,14 +4,14 @@ package com.posbeu.littletown.engine.mosse;
 
 import com.posbeu.littletown.engine.pezzi.Pezzo;
 import com.posbeu.littletown.engine.Board;
-import com.posbeu.littletown.engine.Position;
+import com.posbeu.littletown.engine.BoardPosition;
 
 import java.util.Objects;
 
 public class Mossa {
     private Pezzo pezzo;
-    private Position from;
-    private Position to;
+    private BoardPosition from;
+    private BoardPosition to;
     private Pezzo pezzoEliminato;
 
     private boolean prevAlreadyMoved;
@@ -28,23 +28,23 @@ public class Mossa {
         this.pezzo = pezzo;
     }
 
-    public Position getFrom() {
+    public BoardPosition getFrom() {
         return from;
     }
 
-    public void setFrom(Position from) {
+    public void setFrom(BoardPosition from) {
         this.from = from;
     }
 
-    public Position getTo() {
+    public BoardPosition getTo() {
         return to;
     }
 
-    public void setTo(Position to) {
+    public void setTo(BoardPosition to) {
         this.to = to;
     }
 
-    public Mossa(Pezzo p, Position from, Position to) {
+    public Mossa(Pezzo p, BoardPosition from, BoardPosition to) {
         this.pezzo = p;
         this.from = from;
         this.to = to;
