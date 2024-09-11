@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.collision.Ray;
 public class Util {
     public static Vector3 getPoint(int screenX, int screenY, PerspectiveCamera camera) {
         // If you are only using a camera
+        if(camera==null)return null;
         Ray pickRay = camera.getPickRay(screenX, screenY);
         // If your camera is managed by a viewport
         //   Ray pickRay = viewport.getPickRay(screenCoords.x, screenCoords.y);

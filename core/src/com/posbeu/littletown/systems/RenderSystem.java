@@ -18,11 +18,11 @@ import com.posbeu.littletown.component.*;
 
 
 public class RenderSystem extends EntitySystem {
-    private ImmutableArray<Entity> pezziEntities;
+
     private ImmutableArray<Entity> cellCursorEntities;
     private ImmutableArray<Entity> modelEntities;
-    private ImmutableArray<Entity> markersEntities;
-    private ImmutableArray<Entity> mossePossibiliEntities;
+    private ImmutableArray<Entity> terrainEntities;
+
     private ImmutableArray<Entity> entities4;
     private ImmutableArray<Entity> entities5;
     private ModelBatch batch;
@@ -36,43 +36,27 @@ public class RenderSystem extends EntitySystem {
 
     public void addedToEngine(Engine e) {
         this.engine = e;
-        pezziEntities =
-                e.getEntitiesFor(
-                        Family.all(
-                                PezzoComponent.class
-
-                        ).get());
 
     }
 
     public void update(float delta) {
-        cellCursorEntities =
+       cellCursorEntities =
                 engine.getEntitiesFor(
                         Family.all(
                                 CellCursorComponent.class
                         ).get());
 
-        pezziEntities =
-                engine.getEntitiesFor(
-                        Family.all(
-                                PezzoComponent.class
-                        ).get());
 
         modelEntities =
                 engine.getEntitiesFor(
                         Family.all(
                                 ModelComponent.class
                         ).get());
-        markersEntities =
-                engine.getEntitiesFor(
-                        Family.all(
-                                MarkerComponent.class
-                        ).get());
 
-        mossePossibiliEntities =
+        terrainEntities =
                 engine.getEntitiesFor(
                         Family.all(
-                                MossaPossibileComponent.class
+                                TerrainComponent.class
                         ).get());
 
         for (int i = 0; i < cellCursorEntities.size(); i++) {
@@ -81,33 +65,20 @@ public class RenderSystem extends EntitySystem {
             batch.render(mod.instance, environment);
 
         }
-
-        for (int i = 0; i < mossePossibiliEntities.size(); i++) {
-            MossaPossibileComponent mod =
-                    mossePossibiliEntities.get(i).getComponent(MossaPossibileComponent.class);
+        for (int i = 0; i < terrainEntities.size(); i++) {
+            TerrainComponent mod =
+                    terrainEntities.get(i).getComponent(TerrainComponent.class);
             batch.render(mod.instance, environment);
 
         }
 
-        for (int i = 0; i < pezziEntities.size(); i++) {
-            PezzoComponent mod =
-                    pezziEntities.get(i).getComponent(PezzoComponent.class);
-            batch.render(mod.instance, environment);
-
-        }
-        for (int i = 0; i < modelEntities.size(); i++) {
+       for (int i = 0; i < modelEntities.size(); i++) {
             ModelComponent mod =
                     modelEntities.get(i).getComponent(ModelComponent.class);
             batch.render(mod.instance, environment);
 
         }
-        for (int i = 0; i < markersEntities.size(); i++) {
-            MarkerComponent mod =
-                    markersEntities.get(i).getComponent(MarkerComponent.class);
-            batch.render(mod.instance, environment);
-
-        }
-
+       //show(new Vector3(0,0,0), "ciao");
     }
 
     private void show(Vector3 textPosition, String s) {

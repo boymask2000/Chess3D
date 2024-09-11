@@ -9,10 +9,8 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.posbeu.littletown.engine.ChessEngine;
 import com.posbeu.littletown.engine.pezzi.Alfiere;
 import com.posbeu.littletown.engine.pezzi.Cavallo;
 import com.posbeu.littletown.engine.pezzi.Color;
@@ -21,7 +19,8 @@ import com.posbeu.littletown.engine.pezzi.Re;
 import com.posbeu.littletown.engine.pezzi.Regina;
 import com.posbeu.littletown.engine.pezzi.Torre;
 import com.posbeu.littletown.systems.RenderSystem;
-import com.posbeu.littletown.systems.WalkersSystem;
+
+import com.posbeu.littletown.terrain.Terrain;
 
 public class GameWorld {
     private static final double SIN = Math.sin(Math.PI / 4);
@@ -29,7 +28,7 @@ public class GameWorld {
     private ModelBatch modelBatch;
     private Environment environment;
 
-    private Terrain terrain = new Terrain();
+    private Terrain terrain = Pool.getTerrain();
 
     public Engine getEngine() {
         return engine;
@@ -48,51 +47,29 @@ public class GameWorld {
     private MyInputTracker inputProcessor;
 
     public GameWorld() {
-        ChessEngine chessEngine = new ChessEngine();
-        Pool.setChessEngine(chessEngine);
 
+    //    ChessEngine chessEngine = new ChessEngine();
+    //    Pool.setChessEngine(chessEngine);
+        modelBatch = new ModelBatch();
         initEnvironment();
         initModelBatch();
         initPersCamera();
         addSystems();
         addEntities();
 
-        initPezzi();
+      //  initPezzi();
     }
 
-    private void initPezzi() {
-        EntityFactory.createPezzo(0, 0, new Torre(Color.BIANCO));
-        EntityFactory.createPezzo(1, 0, new Cavallo(Color.BIANCO));
-        EntityFactory.createPezzo(2, 0, new Alfiere(Color.BIANCO));
-        EntityFactory.createPezzo(3, 0, new Regina(Color.BIANCO));
-        EntityFactory.createPezzo(4, 0, new Re(Color.BIANCO));
-        EntityFactory.createPezzo(5, 0, new Alfiere(Color.BIANCO));
-        EntityFactory.createPezzo(6, 0, new Cavallo(Color.BIANCO));
-        EntityFactory.createPezzo(7, 0, new Torre(Color.BIANCO));
 
-        for (int i = 0; i < 8; i++)
-            EntityFactory.createPezzo(i, 1, new Pedone(Color.BIANCO));
-
-        EntityFactory.createPezzo(0, 7, new Torre(Color.NERO));
-        EntityFactory.createPezzo(1, 7, new Cavallo(Color.NERO));
-        EntityFactory.createPezzo(2, 7, new Alfiere(Color.NERO));
-        EntityFactory.createPezzo(3, 7, new Regina(Color.NERO));
-        EntityFactory.createPezzo(4, 7, new Re(Color.NERO));
-        EntityFactory.createPezzo(5, 7, new Alfiere(Color.NERO));
-        EntityFactory.createPezzo(6, 7, new Cavallo(Color.NERO));
-        EntityFactory.createPezzo(7, 7, new Torre(Color.NERO));
-        for (int i = 0; i < 8; i++)
-            EntityFactory.createPezzo(i, 6, new Pedone(Color.NERO));
-    }
 
     private void addEntities() {
         createGround();
     }
 
     private void createGround() {
-        for (int i = 0; i < 8; i++)
+    /*    for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++)
-                EntityFactory.createCell(i, j);
+                EntityFactory.createCell(i, j);*/
     }
 
     public void remove(Entity entity) {
@@ -102,20 +79,20 @@ public class GameWorld {
 
     private void initPersCamera() {
         perspectiveCamera = new PerspectiveCamera(FOV,
-                LittleTown.VIRTUAL_WIDTH, LittleTown.VIRTUAL_HEIGHT);
+                ChessGame.VIRTUAL_WIDTH, ChessGame.VIRTUAL_HEIGHT);
         perspectiveCamera.position.set(25f, 50f, 0);
         //  perspectiveCamera.position.set(500f, 500f, 500f);
-        perspectiveCamera.lookAt(25f, 0f, 30f);
+        perspectiveCamera.lookAt(0, 0f, 0);
         perspectiveCamera.near = 1f;
         perspectiveCamera.far = 300f;
         perspectiveCamera.update();
-
+Pool.setCamera(perspectiveCamera);
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(perspectiveCamera.combined);
 
         inputProcessor = new MyInputTracker();
         //    Gdx.input.setInputProcessor(inputProcessor);
-        inputProcessor.setCamera(perspectiveCamera);
+      inputProcessor.setCamera(perspectiveCamera);
 
         inputProcessor.setShapeRenderer(shapeRenderer);
         terrain.setCamera(perspectiveCamera);
@@ -125,7 +102,7 @@ public class GameWorld {
     private void addSystems() {
         engine = new Engine();
         engine.addSystem(new RenderSystem(modelBatch, environment));
-        engine.addSystem(new WalkersSystem(modelBatch, environment));
+
 
         Pool.setEngine(engine);
 
@@ -135,6 +112,7 @@ public class GameWorld {
 
         movement();
         renderWorld(delta);
+
     }
 
     float angle = 0;
@@ -145,40 +123,28 @@ public class GameWorld {
         Vector3 tmpV1 = new Vector3(20, 20, 0);
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 
-            perspectiveCamera.rotateAround(rot, new Vector3(0, 1, 0), -(float) (Math.PI / 10));
+            perspectiveCamera.translate(0,0,2);
+            //perspectiveCamera.rotateAround(rot, new Vector3(0, 1, 0), -(float) (Math.PI / 10));
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-
-            perspectiveCamera.rotateAround(rot, new Vector3(0, 1, 0), (float) (Math.PI / 10));
+            perspectiveCamera.translate(0,0,-2);
+            //perspectiveCamera.rotateAround(rot, new Vector3(0, 1, 0), (float) (Math.PI / 10));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 
             //       perspectiveCamera.rotateAround(rot, new Vector3(0,0,1),(float) (Math.PI/10));
         }
-
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            perspectiveCamera.translate(-2,0,0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            perspectiveCamera.translate(+2,0,0);
+        }
         perspectiveCamera.update();
     }
 
-    private void movement1() {
-        Vector3 position = perspectiveCamera.position;
 
-        //   position = new Vector3(4*Constants.CELL_SIZE,0, 4*Constants.CELL_SIZE);
-
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            angle += Math.PI / 10;
-
-            perspectiveCamera.rotate(position, -(float) (Math.PI / 10));
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            angle -= Math.PI / 10;
-
-            perspectiveCamera.rotate(position, (float) (Math.PI / 10));
-        }
-
-        perspectiveCamera.update();
-    }
 
 
     private void movement0() {

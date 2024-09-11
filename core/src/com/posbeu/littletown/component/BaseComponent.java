@@ -52,9 +52,7 @@ public class BaseComponent implements Component {
         this.i = i;
     }
 
-    public int getJ() {
-        return j;
-    }
+
 
     public void setJ(int j) {
         this.j = j;

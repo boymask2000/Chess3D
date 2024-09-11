@@ -12,7 +12,6 @@ import java.util.List;
 
 public class ChessEngine {
 
-
     private Board board = new Board();
     private Color playerColor = Color.BIANCO;
 
