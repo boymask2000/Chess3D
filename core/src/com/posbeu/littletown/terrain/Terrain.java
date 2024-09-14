@@ -6,11 +6,9 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.posbeu.littletown.ChessGame;
 import com.posbeu.littletown.EntityFactory;
+import com.posbeu.littletown.Pool;
 import com.posbeu.littletown.Util;
-import com.posbeu.littletown.engine.pezzi.Cavallo;
-import com.posbeu.littletown.engine.pezzi.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,28 +21,31 @@ public class Terrain {
     private PerspectiveCamera camera;
     private Map<String, Zolla> map = new HashMap<>();
 
-    private final int DELTA = 10;
+    boolean doneLink = false;
 
     public void render(float delta) {
         Vector3 vec = Util.getPoint(0, 0, camera);
-        Vector3 vecEnd = Util.getPoint((int) ChessGame.VIRTUAL_WIDTH, (int) ChessGame.VIRTUAL_HEIGHT, camera);
+//        Vector3 vecEnd = Util.getPoint((int) ChessGame.VIRTUAL_WIDTH, (int) ChessGame.VIRTUAL_HEIGHT, camera);
         if (vec == null) return;
-        for (float x = vec.x; x < vec.x + 500; x += DELTA)
-            for (float z = vec.z - 500; z < vec.z + 500; z += DELTA) {
+        for (float x = vec.x; x < vec.x + 500; x += Pool.DELTA)
+            for (float z = vec.z - 500; z < vec.z + 500; z += Pool.DELTA) {
                 Zolla zolla = getZolla(x, z);
 
-                lineZolla(zolla, getZolla(x + DELTA, z));
-                lineZolla(zolla, getZolla(x - DELTA, z));
+                lineZolla(zolla, getZolla(x + Pool.DELTA, z));
+                lineZolla(zolla, getZolla(x - Pool.DELTA, z));
 
-                lineZolla(zolla, getZolla(x, z + DELTA));
-                lineZolla(zolla, getZolla(x, z - DELTA));
-
-
+                lineZolla(zolla, getZolla(x, z + Pool.DELTA));
+                lineZolla(zolla, getZolla(x, z - Pool.DELTA));
             }
+        doneLink = true;
     }
 
     private void lineZolla(Zolla z1, Zolla z2) {
         line(z1.getX(), z1.getZ(), z1.getY(), z2.getX(), z2.getZ(), z2.getY());
+        if (!doneLink) {
+            z1.addVicino(z2);
+            z2.addVicino(z1);
+        }
     }
 
     private void line(float x1, float y1, float z1,
@@ -68,7 +69,7 @@ public class Terrain {
 
 
     public Zolla getZolla(float x, float y) {
-        Vector2 v = Zolla.normalize(x,y);
+        Vector2 v = Zolla.normalize(x, y);
         int xx = (int) v.x;
         int yy = (int) v.y;
 
@@ -79,28 +80,30 @@ public class Terrain {
             Random rand = new Random();
 
             int z = rand.nextInt(5);
-
+            z = 0;
             float f = (float) z;
 
-            Zolla zolla = new Zolla(x, y, f, DELTA);
-            Random r = new Random();
-            int cc = r.nextInt(100);
-
+            Zolla zolla = new Zolla(xx, yy, f);
+            zolla.setKey(key);
             map.put(key, zolla);
             p = zolla;
 
-        //    EntityFactory.createZollaElement(p);
+            Random r = new Random();
+            int cc = r.nextInt(100);
+            //    EntityFactory.createZollaElement(p);
             if (cc > 90 && p.getEntity() == null) {
+                p.setElement(ZollaElement.ALBERO);
 
-                Entity ent = EntityFactory.creatAlberoElement(p);
-                p.setEntity(ent);
             }
+            Entity ent = EntityFactory.createTerrainElement(p);
+            p.setEntity(ent);
+            Pool.getRenderSystem().show(zolla.getPos(), zolla.getKey());
         }
 
         return p;
     }
 
-    public List<Zolla> getZolleAsList(){
+    public List<Zolla> getZolleAsList() {
         return new ArrayList<Zolla>(map.values());
     }
 }

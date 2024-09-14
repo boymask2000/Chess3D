@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.posbeu.littletown.engine.pezzi.Alfiere;
 import com.posbeu.littletown.engine.pezzi.Cavallo;
 import com.posbeu.littletown.engine.pezzi.Color;
@@ -57,6 +58,7 @@ public class GameWorld {
         addSystems();
         addEntities();
 
+        Pool.setGameWorld(this);
       //  initPezzi();
     }
 
@@ -78,6 +80,8 @@ public class GameWorld {
     }
 
     private void initPersCamera() {
+
+
         perspectiveCamera = new PerspectiveCamera(FOV,
                 ChessGame.VIRTUAL_WIDTH, ChessGame.VIRTUAL_HEIGHT);
         perspectiveCamera.position.set(25f, 50f, 0);
@@ -97,6 +101,9 @@ Pool.setCamera(perspectiveCamera);
         inputProcessor.setShapeRenderer(shapeRenderer);
         terrain.setCamera(perspectiveCamera);
 
+
+        FitViewport v = new FitViewport(ChessGame.VIRTUAL_WIDTH, ChessGame.VIRTUAL_HEIGHT, perspectiveCamera);
+        Pool.setViewport(v);
     }
 
     private void addSystems() {

@@ -13,7 +13,7 @@ import java.util.Map;
 public class ModelManager {
     private static Map<String, Model> models = new HashMap<>();
 
-    public static Model getObjModel(String fName) {
+    public static Model getg3djModel(String fName) {
 
         String fileName = fName;
 
@@ -27,7 +27,7 @@ public class ModelManager {
         return m;
     }
 
-    public static Model getModel(String fName) {
+    public static Model getObjModel(String fName) {
 
         String fileName = fName;
 

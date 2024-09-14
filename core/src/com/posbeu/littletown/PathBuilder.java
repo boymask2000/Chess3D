@@ -2,6 +2,9 @@ package com.posbeu.littletown;
 
 import com.badlogic.gdx.math.CatmullRomSpline;
 import com.badlogic.gdx.math.Vector3;
+import com.posbeu.littletown.terrain.Zolla;
+
+import java.util.List;
 
 public class PathBuilder {
     private Vector3[] points = new Vector3[4];
@@ -20,6 +23,7 @@ public class PathBuilder {
         points[2] = p2;
         curve = new CatmullRomSpline<Vector3>(points, false);
     }
+
 
     public Vector3 getNextPoint() {
         if (t >= 1) return null;

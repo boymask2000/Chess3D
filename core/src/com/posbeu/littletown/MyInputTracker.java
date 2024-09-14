@@ -12,7 +12,10 @@ import com.posbeu.littletown.component.BaseComponent;
 import com.posbeu.littletown.component.CellCursorComponent;
 import com.posbeu.littletown.component.ModelComponent;
 
+import com.posbeu.littletown.terrain.PathManager;
 import com.posbeu.littletown.terrain.Zolla;
+
+import java.util.List;
 
 public class MyInputTracker implements InputProcessor {
     private PerspectiveCamera camera;
@@ -21,6 +24,8 @@ public class MyInputTracker implements InputProcessor {
     private BaseComponent first = null;
     private CellCursorComponent cellCursorComponent;
 
+    Zolla zollaStart;
+    private boolean started = false;
 
     @Override
     public boolean keyDown(int keycode) {
@@ -40,13 +45,38 @@ public class MyInputTracker implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        Vector3 point = getPoint(screenX, screenY);
-        //       System.out.println( screenX+" "+screenY);
+
+        Vector3 point = Util.getPoint(screenX, screenY, camera);
+        System.out.println(screenX + " " + screenY);
         Zolla z = Pool.getTerrain().getZolla(point.x, point.z);
 
+/*        System.out.println("ZOLLA :"+z);
+        for( Zolla l: z.getVicini())
+System.out.println(l);*/
         EntityFactory.createCellCursor(z);
 
+
+        if (!started) {
+            zollaStart = z;
+            started = true;
+            System.out.println(started);
+            return true;
+        }
+        if (started) {
+
+            started = false;
+            System.out.println(started);
+            calcolaPath(zollaStart, z);
+        }
+
         return true;
+    }
+
+    private void calcolaPath(Zolla zollaStart, Zolla z) {
+        PathManager pm = new PathManager();
+        List<Zolla> path = pm.build(zollaStart, z);
+        for (Zolla q : path)
+            System.out.println(q);
     }
 
 
@@ -60,18 +90,22 @@ public class MyInputTracker implements InputProcessor {
         return false;
     }
 
+
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
+        return true;
     }
 
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Vector3 point = getPoint(screenX, screenY);
+        //  touchDragged(screenX, screenY, 0);
+        Vector3 point = Util.getPoint(screenX, screenY, camera);
         Zolla z = Pool.getTerrain().getZolla(point.x, point.z);
-        if (z.getEntity() == null)
+        System.out.println(point.x + " " + point.z + " " + z);
+        if (z.getElement() == null)
             EntityFactory.createCellCursor(z);
+
 
         return true;
     }
@@ -95,22 +129,23 @@ public class MyInputTracker implements InputProcessor {
         this.shapeRenderer = shapeRenderer;
     }
 
-    private Vector3 getPoint(int screenX, int screenY) {
+/*    private Vector3 getPoint(int screenX, int screenY) {
+
         // If you are only using a camera
         Ray pickRay = camera.getPickRay(screenX, screenY);
         // If your camera is managed by a viewport
-        //   Ray pickRay = viewport.getPickRay(screenCoords.x, screenCoords.y);
+        //     Ray pickRay = Pool.getViewport().getPickRay(screenX, screenY);
 
         // we want to check a collision only on a certain plane, in this case the X/Z plane
         Plane plane = new Plane(new Vector3(0, 5, 0), Vector3.Zero);
         Vector3 intersection = new Vector3();
         if (Intersector.intersectRayPlane(pickRay, plane, intersection)) {
             // The ray has hit the plane, intersection is the point it hit
-
+//System.out.println(intersection);
             return intersection;
         }
         return null;
-    }
+    }*/
 
    /* public BaseComponent getObject(int screenX, int screenY) {
         Vector3 click = getPoint(screenX, screenY);

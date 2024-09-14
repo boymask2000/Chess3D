@@ -11,11 +11,13 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.posbeu.littletown.component.ModelComponent;
 import com.posbeu.littletown.component.MossaPossibileComponent;
 
 import com.posbeu.littletown.engine.ChessEngine;
 import com.posbeu.littletown.engine.pezzi.Pezzo;
+import com.posbeu.littletown.systems.RenderSystem;
 import com.posbeu.littletown.terrain.Terrain;
 
 
@@ -23,26 +25,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pool {
-
-    private static FaseGioco faseGioco=FaseGioco.PLAY;
-
+    public static final int DELTA = 10;
+    private static FaseGioco faseGioco = FaseGioco.PLAY;
     private static FreeTypeFontGenerator generator = null;
     private static BitmapFont genericfont;
     private static Engine engine;
     private static List<Entity> entities = new ArrayList<>();
     private static ButtonScreen buttonScreen;
-
-
-
     private static PerspectiveCamera camera;
     private static ChessEngine chessEngine;
-
-
     private static Terrain terrain;
+    private static FitViewport viewport;
+    private static GameScreen gameScreen;
+    private static GameWorld gameWorld;
 
-    public static ButtonScreen getButtonScreen() {
-        return buttonScreen;
-    }
+
+    private static RenderSystem renderSystem;
 
     public static void setButtonScreen(ButtonScreen buttonScreen) {
         Pool.buttonScreen = buttonScreen;
@@ -59,7 +57,6 @@ public class Pool {
     private static List<Entity> markers = new ArrayList<>();
 
 
-
     public static void addMossaPossibile(MossaPossibileComponent m) {
 
 
@@ -73,9 +70,11 @@ public class Pool {
     public static PerspectiveCamera getCamera() {
         return camera;
     }
+
     public static void setCamera(PerspectiveCamera camera) {
         Pool.camera = camera;
     }
+
     public static BitmapFont getFont() {
         if (generator == null) {
             FreeTypeFontGenerator.FreeTypeFontParameter par = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -107,8 +106,6 @@ public class Pool {
     }
 
 
-
-
     public static List<ModelComponent> getCelle() {
         ImmutableArray<Entity> celleEntities = engine.getEntitiesFor(
                 Family.all(
@@ -120,7 +117,7 @@ public class Pool {
         for (int x = 0; x < celleEntities.size(); x++) {
             ModelComponent c =
                     celleEntities.get(x).getComponent(ModelComponent.class);
-            out.add( c);
+            out.add(c);
 
         }
 
@@ -138,4 +135,35 @@ public class Pool {
         Pool.terrain = terrain;
     }
 
+    public static void setViewport(FitViewport v) {
+        viewport = v;
+    }
+
+    public static FitViewport getViewport() {
+        return viewport;
+    }
+
+    public static void setGameScreen(GameScreen gameScreen) {
+        Pool.gameScreen = gameScreen;
+    }
+
+    public static GameScreen getGameScreen() {
+        return gameScreen;
+    }
+
+    public static void setGameWorld(GameWorld gameWorld) {
+        Pool.gameWorld = gameWorld;
+    }
+
+    public static GameWorld getGameWorld() {
+        return gameWorld;
+    }
+
+    public static RenderSystem getRenderSystem() {
+        return renderSystem;
+    }
+
+    public static void setRenderSystem(RenderSystem renderSystem) {
+        Pool.renderSystem = renderSystem;
+    }
 }

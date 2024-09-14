@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.posbeu.littletown.Constants;
+import com.posbeu.littletown.Pool;
 import com.posbeu.littletown.engine.player.BoardGDX;
 import com.posbeu.littletown.terrain.Zolla;
 
@@ -21,7 +22,7 @@ public class CellCursorComponent extends BaseComponent implements Component {
 
     public CellCursorComponent(Zolla z) {
         this.zolla = z;
-        init(new Vector3(z.getX(), z.getZ(), z.getY()), getModel());
+        init(new Vector3(z.getX() + Pool.DELTA / 2, z.getZ() + Pool.DELTA / 2, z.getY()), getModel());
     }
 
     public Model getModel() {

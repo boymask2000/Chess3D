@@ -25,6 +25,7 @@ import com.posbeu.littletown.engine.pezzi.Color;
 import com.posbeu.littletown.engine.pezzi.Pezzo;
 import com.posbeu.littletown.models.AlberoModel;
 import com.posbeu.littletown.terrain.Zolla;
+import com.posbeu.littletown.terrain.ZollaElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,7 +68,7 @@ public class EntityFactory {
     }
 
 
-    public static void cleanCursor(){
+    public static void cleanCursor() {
         Engine engine = Pool.getEngine();
         ImmutableArray<Entity> cellCursorEntities = engine.getEntitiesFor(
                 Family.all(
@@ -78,34 +79,61 @@ public class EntityFactory {
             engine.removeEntity(cellCursorEntities.get(i));
     }
 
-    public static CellCursorComponent createCellCursor(Zolla z) {
+    public static Entity createCellCursor(Zolla z) {
         cleanCursor();
+        return createCellCursor0(z);
+
+    }
+
+
+    public static Entity createCellCursor0(Zolla z) {
+
         Vector3 pos = z.getPos();
         CellCursorComponent cellCursorComponent = new CellCursorComponent(z);
         cellCursorComponent.setPosition(pos);
-        Entity entity = new Entity();
-        entity.add(cellCursorComponent);
 
+        return createComponent(cellCursorComponent);
+    }
+
+    public static void remove(Entity c) {
         Engine engine = Pool.getEngine();
-        engine.addEntity(entity);
-
-        return cellCursorComponent;
+        engine.removeEntity(c);
     }
 
     public static Entity creatAlberoElement(Zolla zolla) {
 
         Vector3 pos = zolla.getPos();
-        Engine engine = Pool.getEngine();
 
-        TerrainComponent comp = new TerrainComponent(zolla, ModelManager.getObjModel("qqPineTree1"));
+        TerrainComponent comp = new TerrainComponent(zolla, ModelManager.getObjModel("treepack1"));
         comp.setPosition(pos);
-        //comp.setPosition(new Vector3(i * Constants.CELL_SIZE, 0, j * Constants.CELL_SIZE));
+        return createComponent(comp);
+    }
+
+    public static Entity createTerrainElement(Zolla zolla) {
+
+        Vector3 pos = zolla.getPos();
+        Engine engine = Pool.getEngine();
         Entity entity = new Entity();
-        entity.add(comp);
+
+        if (zolla.getElement() == ZollaElement.ALBERO) {
+            creatAlberoElement(zolla);
+
+        }
+
         engine.addEntity(entity);
 
         return entity;
     }
 
+    private static Entity createComponent(BaseComponent comp) {
+
+        Entity entity = new Entity();
+        entity.add(comp);
+
+        Engine engine = Pool.getEngine();
+        engine.addEntity(entity);
+
+        return entity;
+    }
 
 }

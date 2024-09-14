@@ -13,6 +13,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(ChessGame game) {
         this.game = game;
+        Pool.setGameScreen(this);
         Pool.setTerrain(terrain);
 
         gameWorld = new GameWorld();

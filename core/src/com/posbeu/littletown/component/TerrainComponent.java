@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.posbeu.littletown.Constants;
+import com.posbeu.littletown.Pool;
 import com.posbeu.littletown.engine.pezzi.Pezzo;
 import com.posbeu.littletown.systems.PathBuilder;
 import com.posbeu.littletown.terrain.Zolla;
@@ -24,17 +25,12 @@ public class TerrainComponent extends BaseComponent implements Component {
     public void update(float delta) {
     }
 
-
     public TerrainComponent(Zolla z, Model model) {
 
-        init(new Vector3(z.getX(), z.getZ(), z.getY()), model);
+        init(new Vector3(z.getX() + Pool.DELTA / 2,
+                z.getZ() + Pool.DELTA / 2, z.getY()), model);
     }
 
-
-
-    /*    public PezzoComponent(Vector3 pos, Pezzo pezzo) {
-            init( pos,  pezzo);
-        }*/
     private void init(Vector3 pos, Model model) {
 
         this.model = model;

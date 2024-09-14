@@ -32,6 +32,8 @@ public class RenderSystem extends EntitySystem {
     public RenderSystem(ModelBatch batch, Environment environment) {
         this.batch = batch;
         this.environment = environment;
+
+        Pool.setRenderSystem(this);
     }
 
     public void addedToEngine(Engine e) {
@@ -81,7 +83,7 @@ public class RenderSystem extends EntitySystem {
        //show(new Vector3(0,0,0), "ciao");
     }
 
-    private void show(Vector3 textPosition, String s) {
+    public void show(Vector3 textPosition, String s) {
         /* best to make these static, but whatever */
         // Vector3 textPosition = /* the location of the text */;
         PerspectiveCamera cam = Pool.getCamera();

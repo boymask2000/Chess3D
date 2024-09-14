@@ -36,7 +36,10 @@ public class StartScreen implements Screen {
 
     public StartScreen(ChessGame game) {
 
-        stage = new Stage(new FitViewport(ChessGame.VIRTUAL_WIDTH, ChessGame.VIRTUAL_HEIGHT));
+        FitViewport v = new FitViewport(ChessGame.VIRTUAL_WIDTH, ChessGame.VIRTUAL_HEIGHT);
+        Pool.setViewport(v);
+
+        stage = new Stage(v);
 
 
         BitmapFont font12 = getFont();
