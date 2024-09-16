@@ -12,16 +12,11 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.posbeu.littletown.engine.pezzi.Alfiere;
-import com.posbeu.littletown.engine.pezzi.Cavallo;
-import com.posbeu.littletown.engine.pezzi.Color;
-import com.posbeu.littletown.engine.pezzi.Pedone;
-import com.posbeu.littletown.engine.pezzi.Re;
-import com.posbeu.littletown.engine.pezzi.Regina;
-import com.posbeu.littletown.engine.pezzi.Torre;
 import com.posbeu.littletown.systems.RenderSystem;
 
 import com.posbeu.littletown.terrain.Terrain;
+
+import lombok.Getter;
 
 public class GameWorld {
     private static final double SIN = Math.sin(Math.PI / 4);
@@ -41,10 +36,7 @@ public class GameWorld {
 
     private ShapeRenderer shapeRenderer;
 
-    public MyInputTracker getInputProcessor() {
-        return inputProcessor;
-    }
-
+    @Getter
     private MyInputTracker inputProcessor;
 
     public GameWorld() {

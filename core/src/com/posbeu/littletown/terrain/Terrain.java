@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.posbeu.littletown.EntityFactory;
 import com.posbeu.littletown.Pool;
 import com.posbeu.littletown.Util;
+import com.posbeu.littletown.terrain.vicinato.VicinatoManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import lombok.Data;
+
+@Data
 public class Terrain {
     private ImmediateModeRenderer20 lineRenderer = new ImmediateModeRenderer20(false, true, 0);
     private PerspectiveCamera camera;
@@ -43,8 +47,9 @@ public class Terrain {
     private void lineZolla(Zolla z1, Zolla z2) {
         line(z1.getX(), z1.getZ(), z1.getY(), z2.getX(), z2.getZ(), z2.getY());
         if (!doneLink) {
-            z1.addVicino(z2);
-            z2.addVicino(z1);
+            VicinatoManager.addVicino(z1, z2);
+            VicinatoManager.addVicino(z2, z1);
+
         }
     }
 
@@ -88,19 +93,25 @@ public class Terrain {
             map.put(key, zolla);
             p = zolla;
 
-            Random r = new Random();
-            int cc = r.nextInt(100);
-            //    EntityFactory.createZollaElement(p);
-            if (cc > 90 && p.getEntity() == null) {
-                p.setElement(ZollaElement.ALBERO);
 
-            }
+            //insertAlbero(p);
+
             Entity ent = EntityFactory.createTerrainElement(p);
             p.setEntity(ent);
             Pool.getRenderSystem().show(zolla.getPos(), zolla.getKey());
         }
 
         return p;
+    }
+
+    private void insertAlbero(Zolla p) {
+        Random r = new Random();
+        int cc = r.nextInt(100);
+        //    EntityFactory.createZollaElement(p);
+        if (cc > 90 && p.getEntity() == null) {
+            p.setElement(ZollaElement.ALBERO);
+
+        }
     }
 
     public List<Zolla> getZolleAsList() {

@@ -24,16 +24,41 @@ import com.posbeu.littletown.terrain.Terrain;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+@Data
+@Getter
+@Setter
 public class Pool {
     public static final int DELTA = 10;
-    private static FaseGioco faseGioco = FaseGioco.PLAY;
+
     private static FreeTypeFontGenerator generator = null;
     private static BitmapFont genericfont;
+
+    public static void setEngine(Engine engine) {
+        Pool.engine = engine;
+    }
+
+    public static Engine getEngine() {
+        return engine;
+    }
+
     private static Engine engine;
     private static List<Entity> entities = new ArrayList<>();
     private static ButtonScreen buttonScreen;
+
+    public static PerspectiveCamera getCamera() {
+        return camera;
+    }
+
     private static PerspectiveCamera camera;
-    private static ChessEngine chessEngine;
+
+    public static Terrain getTerrain() {
+        return terrain;
+    }
+
     private static Terrain terrain;
     private static FitViewport viewport;
     private static GameScreen gameScreen;
@@ -46,13 +71,6 @@ public class Pool {
         Pool.buttonScreen = buttonScreen;
     }
 
-    public static Engine getEngine() {
-        return engine;
-    }
-
-    public static void setEngine(Engine engine) {
-        Pool.engine = engine;
-    }
 
     private static List<Entity> markers = new ArrayList<>();
 
@@ -67,9 +85,6 @@ public class Pool {
         engine.addEntity(entity);
     }
 
-    public static PerspectiveCamera getCamera() {
-        return camera;
-    }
 
     public static void setCamera(PerspectiveCamera camera) {
         Pool.camera = camera;
@@ -97,13 +112,7 @@ public class Pool {
         markers.clear();
     }
 
-    public static void setChessEngine(ChessEngine chessEngine) {
-        Pool.chessEngine = chessEngine;
-    }
 
-    public static ChessEngine getChessEngine() {
-        return chessEngine;
-    }
 
 
     public static List<ModelComponent> getCelle() {
@@ -124,11 +133,6 @@ public class Pool {
         return out;
     }
 
-
-    public static Terrain getTerrain() {
-
-        return terrain;
-    }
 
     public static void setTerrain(Terrain terrain) {
 

@@ -59,13 +59,13 @@ System.out.println(l);*/
         if (!started) {
             zollaStart = z;
             started = true;
-            System.out.println(started);
+            System.out.println("Punto partenza");
             return true;
         }
         if (started) {
 
             started = false;
-            System.out.println(started);
+            System.out.println("go");
             calcolaPath(zollaStart, z);
         }
 
@@ -95,17 +95,16 @@ System.out.println(l);*/
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         return true;
     }
-
-
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         //  touchDragged(screenX, screenY, 0);
         Vector3 point = Util.getPoint(screenX, screenY, camera);
         Zolla z = Pool.getTerrain().getZolla(point.x, point.z);
-        System.out.println(point.x + " " + point.z + " " + z);
+        System.out.println("-------------------");
+        System.out.println(screenX + " " + screenY);
+        System.out.println(point.x + " " + point.z + " " + z + z.getPos());
         if (z.getElement() == null)
             EntityFactory.createCellCursor(z);
-
 
         return true;
     }
@@ -128,46 +127,4 @@ System.out.println(l);*/
     public void setShapeRenderer(ShapeRenderer shapeRenderer) {
         this.shapeRenderer = shapeRenderer;
     }
-
-/*    private Vector3 getPoint(int screenX, int screenY) {
-
-        // If you are only using a camera
-        Ray pickRay = camera.getPickRay(screenX, screenY);
-        // If your camera is managed by a viewport
-        //     Ray pickRay = Pool.getViewport().getPickRay(screenX, screenY);
-
-        // we want to check a collision only on a certain plane, in this case the X/Z plane
-        Plane plane = new Plane(new Vector3(0, 5, 0), Vector3.Zero);
-        Vector3 intersection = new Vector3();
-        if (Intersector.intersectRayPlane(pickRay, plane, intersection)) {
-            // The ray has hit the plane, intersection is the point it hit
-//System.out.println(intersection);
-            return intersection;
-        }
-        return null;
-    }*/
-
-   /* public BaseComponent getObject(int screenX, int screenY) {
-        Vector3 click = getPoint(screenX, screenY);
-
-        BaseComponent result = null;
-        float distance = 10000f;
-        List<BaseComponent> instances = Pool.getInstances();
-        for (BaseComponent comp : instances) {
-            //   System.out.println("comp " + comp.getI() + " " + comp.getJ());
-            Vector3 position = comp.getPosition();
-
-            float dist2 = click.dst2(position);
-
-            if (dist2 < distance) {
-                result = comp;
-                //   System.out.println("res "+result.getI()+" "+result.getJ()+ " "+dist2);
-                distance = dist2;
-            }
-
-        }
-        return result;
-    }
-*/
-
 }

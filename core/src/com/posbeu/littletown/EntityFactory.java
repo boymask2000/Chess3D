@@ -85,13 +85,29 @@ public class EntityFactory {
 
     }
 
-
     public static Entity createCellCursor0(Zolla z) {
 
         Vector3 pos = z.getPos();
         CellCursorComponent cellCursorComponent = new CellCursorComponent(z);
         cellCursorComponent.setPosition(pos);
+        System.out.println("createCellCursor0" + pos);
 
+
+        Entity entity = new Entity();
+        entity.add(cellCursorComponent);
+        cellCursorComponent.getInstance().transform.setTranslation(pos);
+
+        Engine engine = Pool.getEngine();
+        engine.addEntity(entity);
+        return entity;
+    }
+
+    public static Entity createCellCursor0old(Zolla z) {
+
+        Vector3 pos = z.getPos();
+        CellCursorComponent cellCursorComponent = new CellCursorComponent(z);
+        cellCursorComponent.setPosition(pos);
+        System.out.println("createCellCursor0" + pos);
         return createComponent(cellCursorComponent);
     }
 
@@ -100,7 +116,7 @@ public class EntityFactory {
         engine.removeEntity(c);
     }
 
-    public static Entity creatAlberoElement(Zolla zolla) {
+    private static Entity creatAlberoElement(Zolla zolla) {
 
         Vector3 pos = zolla.getPos();
 
