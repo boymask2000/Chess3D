@@ -1,6 +1,7 @@
 package com.posbeu.littletown;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.posbeu.littletown.terrain.Terrain;
 
@@ -18,9 +19,17 @@ public class GameScreen implements Screen {
 
         gameWorld = new GameWorld();
 
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+
+
+        // InputMultiplexer inputMultiplexer = (InputMultiplexer) Gdx.input.getInputProcessor();
+
         MyInputTracker inputProcessor = gameWorld.getInputProcessor();
-    //    inputProcessor.setEngine(gameWorld.getEngine());
-        Gdx.input.setInputProcessor(inputProcessor);
+
+        inputMultiplexer.addProcessor(inputProcessor);
+        Gdx.input.setInputProcessor(inputMultiplexer);
+//        Gdx.input.setInputProcessor(inputProcessor);
+        buttonScreen = new ButtonScreen(game);
     }
 
     private void initScreen(Screen sceen) {
@@ -38,7 +47,7 @@ public class GameScreen implements Screen {
 
         gameWorld.render(delta);
 
-
+        buttonScreen.render(delta);
     }
 
     @Override

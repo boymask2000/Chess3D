@@ -90,8 +90,6 @@ public class EntityFactory {
         Vector3 pos = z.getPos();
         CellCursorComponent cellCursorComponent = new CellCursorComponent(z);
         cellCursorComponent.setPosition(pos);
-        System.out.println("createCellCursor0" + pos);
-
 
         Entity entity = new Entity();
         entity.add(cellCursorComponent);
@@ -106,9 +104,8 @@ public class EntityFactory {
 
         Vector3 pos = z.getPos();
         CellCursorComponent cellCursorComponent = new CellCursorComponent(z);
-        cellCursorComponent.setPosition(pos);
-        System.out.println("createCellCursor0" + pos);
-        return createComponent(cellCursorComponent);
+
+        return createComponent(cellCursorComponent, pos);
     }
 
     public static void remove(Entity c) {
@@ -121,8 +118,8 @@ public class EntityFactory {
         Vector3 pos = zolla.getPos();
 
         TerrainComponent comp = new TerrainComponent(zolla, ModelManager.getObjModel("treepack1"));
-        comp.setPosition(pos);
-        return createComponent(comp);
+
+        return createComponent(comp, pos);
     }
 
     public static Entity createTerrainElement(Zolla zolla) {
@@ -141,8 +138,8 @@ public class EntityFactory {
         return entity;
     }
 
-    private static Entity createComponent(BaseComponent comp) {
-
+    private static Entity createComponent(BaseComponent comp, Vector3 position) {
+        comp.getInstance().transform.setTranslation(position);
         Entity entity = new Entity();
         entity.add(comp);
 

@@ -47,7 +47,7 @@ public class MyInputTracker implements InputProcessor {
 
 
         Vector3 point = Util.getPoint(screenX, screenY, camera);
-        System.out.println(screenX + " " + screenY);
+
         Zolla z = Pool.getTerrain().getZolla(point.x, point.z);
 
 /*        System.out.println("ZOLLA :"+z);
@@ -56,7 +56,7 @@ System.out.println(l);*/
         EntityFactory.createCellCursor(z);
 
 
-        if (!started) {
+ /*       if (!started) {
             zollaStart = z;
             started = true;
             System.out.println("Punto partenza");
@@ -67,9 +67,9 @@ System.out.println(l);*/
             started = false;
             System.out.println("go");
             calcolaPath(zollaStart, z);
-        }
+        }*/
 
-        return true;
+        return false;
     }
 
     private void calcolaPath(Zolla zollaStart, Zolla z) {
@@ -100,9 +100,7 @@ System.out.println(l);*/
         //  touchDragged(screenX, screenY, 0);
         Vector3 point = Util.getPoint(screenX, screenY, camera);
         Zolla z = Pool.getTerrain().getZolla(point.x, point.z);
-        System.out.println("-------------------");
-        System.out.println(screenX + " " + screenY);
-        System.out.println(point.x + " " + point.z + " " + z + z.getPos());
+
         if (z.getElement() == null)
             EntityFactory.createCellCursor(z);
 

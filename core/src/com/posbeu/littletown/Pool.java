@@ -7,6 +7,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -36,6 +37,10 @@ public class Pool {
 
     private static FreeTypeFontGenerator generator = null;
     private static BitmapFont genericfont;
+
+
+    @Getter
+    private static OrthographicCamera guiCamera;
 
     public static void setEngine(Engine engine) {
         Pool.engine = engine;
@@ -170,4 +175,9 @@ public class Pool {
     public static void setRenderSystem(RenderSystem renderSystem) {
         Pool.renderSystem = renderSystem;
     }
+
+    public static void setGuiCamera(OrthographicCamera guiCamera) {
+        Pool.guiCamera = guiCamera;
+    }
+
 }

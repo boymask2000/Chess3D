@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.posbeu.littletown.systems.RenderSystem;
 
 import com.posbeu.littletown.terrain.Terrain;
+
 
 import lombok.Getter;
 
@@ -41,8 +43,8 @@ public class GameWorld {
 
     public GameWorld() {
 
-    //    ChessEngine chessEngine = new ChessEngine();
-    //    Pool.setChessEngine(chessEngine);
+        //    ChessEngine chessEngine = new ChessEngine();
+        //    Pool.setChessEngine(chessEngine);
         modelBatch = new ModelBatch();
         initEnvironment();
         initModelBatch();
@@ -51,9 +53,8 @@ public class GameWorld {
         addEntities();
 
         Pool.setGameWorld(this);
-      //  initPezzi();
+        //  initPezzi();
     }
-
 
 
     private void addEntities() {
@@ -82,13 +83,13 @@ public class GameWorld {
         perspectiveCamera.near = 1f;
         perspectiveCamera.far = 300f;
         perspectiveCamera.update();
-Pool.setCamera(perspectiveCamera);
+        Pool.setCamera(perspectiveCamera);
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(perspectiveCamera.combined);
 
         inputProcessor = new MyInputTracker();
         //    Gdx.input.setInputProcessor(inputProcessor);
-      inputProcessor.setCamera(perspectiveCamera);
+        inputProcessor.setCamera(perspectiveCamera);
 
         inputProcessor.setShapeRenderer(shapeRenderer);
         terrain.setCamera(perspectiveCamera);
@@ -114,20 +115,18 @@ Pool.setCamera(perspectiveCamera);
 
     }
 
-    float angle = 0;
-
     private void movement() {
         Vector3 position = perspectiveCamera.position;
         Vector3 rot = new Vector3(20, 0, 20);
         Vector3 tmpV1 = new Vector3(20, 20, 0);
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 
-            perspectiveCamera.translate(0,0,2);
+            perspectiveCamera.translate(0, 0, 2);
             //perspectiveCamera.rotateAround(rot, new Vector3(0, 1, 0), -(float) (Math.PI / 10));
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            perspectiveCamera.translate(0,0,-2);
+            perspectiveCamera.translate(0, 0, -2);
             //perspectiveCamera.rotateAround(rot, new Vector3(0, 1, 0), (float) (Math.PI / 10));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
@@ -135,15 +134,13 @@ Pool.setCamera(perspectiveCamera);
             //       perspectiveCamera.rotateAround(rot, new Vector3(0,0,1),(float) (Math.PI/10));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            perspectiveCamera.translate(-2,0,0);
+            perspectiveCamera.translate(-2, 0, 0);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            perspectiveCamera.translate(+2,0,0);
+            perspectiveCamera.translate(+2, 0, 0);
         }
         perspectiveCamera.update();
     }
-
-
 
 
     private void movement0() {
