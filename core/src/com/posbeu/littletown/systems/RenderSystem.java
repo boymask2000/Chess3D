@@ -19,6 +19,8 @@ import com.posbeu.littletown.component.*;
 
 public class RenderSystem extends EntitySystem {
 
+    //  private ImmutableArray<Entity> vagabondoEntities;
+    private ImmutableArray<Entity> edificioEntities;
     private ImmutableArray<Entity> cellCursorEntities;
     private ImmutableArray<Entity> modelEntities;
     private ImmutableArray<Entity> terrainEntities;
@@ -42,6 +44,12 @@ public class RenderSystem extends EntitySystem {
     }
 
     public void update(float delta) {
+        edificioEntities =
+                engine.getEntitiesFor(
+                        Family.all(
+                                EdificioComponent.class
+                        ).get());
+
        cellCursorEntities =
                 engine.getEntitiesFor(
                         Family.all(
@@ -61,6 +69,17 @@ public class RenderSystem extends EntitySystem {
                                 TerrainComponent.class
                         ).get());
 
+   /*     for (int i = 0; i < vagabondoEntities.size(); i++) {
+            VagabondoComponent mod =
+                    vagabondoEntities.get(i).getComponent(VagabondoComponent.class);
+            batch.render(mod.instance, environment);
+        }*/
+        for (int i = 0; i < edificioEntities.size(); i++) {
+            EdificioComponent mod =
+                    edificioEntities.get(i).getComponent(EdificioComponent.class);
+            batch.render(mod.instance, environment);
+
+        }
         for (int i = 0; i < cellCursorEntities.size(); i++) {
             CellCursorComponent mod =
                     cellCursorEntities.get(i).getComponent(CellCursorComponent.class);

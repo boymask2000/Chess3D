@@ -13,13 +13,17 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.posbeu.littletown.systems.PathBuilder;
 import com.posbeu.littletown.systems.RenderSystem;
 
+import com.posbeu.littletown.systems.VagabondoSystem;
 import com.posbeu.littletown.terrain.Terrain;
 
 
+import lombok.Data;
 import lombok.Getter;
 
+@Data
 public class GameWorld {
     private static final double SIN = Math.sin(Math.PI / 4);
     private static final float FOV = 67F;
@@ -38,8 +42,9 @@ public class GameWorld {
 
     private ShapeRenderer shapeRenderer;
 
-    @Getter
-    private MyInputTracker inputProcessor;
+
+    // private MyInputTracker inputProcessor;
+    private MyInputTrackerPlain inputProcessor;
 
     public GameWorld() {
 
@@ -87,7 +92,7 @@ public class GameWorld {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(perspectiveCamera.combined);
 
-        inputProcessor = new MyInputTracker();
+        inputProcessor = new MyInputTrackerPlain();
         //    Gdx.input.setInputProcessor(inputProcessor);
         inputProcessor.setCamera(perspectiveCamera);
 
@@ -103,7 +108,8 @@ public class GameWorld {
         engine = new Engine();
         engine.addSystem(new RenderSystem(modelBatch, environment));
 
-
+        engine.addSystem(new PathBuilder(modelBatch, environment));
+        engine.addSystem(new VagabondoSystem(modelBatch, environment));
         Pool.setEngine(engine);
 
     }
@@ -204,5 +210,12 @@ public class GameWorld {
         perspectiveCamera.viewportWidth = width;
     }
     //and set up the render function with the modelbatch
+    public MyInputTrackerPlain getInputProcessor() {
+        return inputProcessor;
+    }
+
+    public void setInputProcessor(MyInputTrackerPlain inputProcessor) {
+        this.inputProcessor = inputProcessor;
+    }
 
 }

@@ -4,14 +4,9 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.Ray;
 import com.posbeu.littletown.component.BaseComponent;
 import com.posbeu.littletown.component.CellCursorComponent;
-import com.posbeu.littletown.component.ModelComponent;
-
 import com.posbeu.littletown.terrain.PathManager;
 import com.posbeu.littletown.terrain.Zolla;
 
@@ -21,7 +16,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class MyInputTracker implements InputProcessor {
+public class MyInputTrackerPlain implements InputProcessor {
     private PerspectiveCamera camera;
     private Engine engine;
     private ShapeRenderer shapeRenderer;
@@ -55,37 +50,25 @@ public class MyInputTracker implements InputProcessor {
 
         Zolla z = Pool.getTerrain().getZolla(point.x, point.z);
 
-/*        System.out.println("ZOLLA :"+z);
-        for( Zolla l: z.getVicini())
-System.out.println(l);*/
-        EntityFactory.createCellCursor(z);
 
+        //    EntityFactory.createCellCursor(z);
+
+
+        createObj(z, false);
 
         if (!started) {
             zollaStart = z;
             started = true;
             System.out.println("Punto partenza");
-            path.clear();
-            path.add(zollaStart);
+
             return true;
         }
         if (started) {
 
             started = false;
+            EntityFactory.createVagabondoEntity(zollaStart, z);
 
-            EntityFactory.createSpLine(path);
-          /*  System.out.println("go");
-            List<Zolla> path = calcolaPath(zollaStart, z);
-            Zolla prec = null;
-            for (Zolla zz : path) {
-                if (prec == null) {
-                    prec = zz;
-                    continue;
-                }
-                EntityFactory.createRoadElement(prec, zz);
-                prec = zz;
-            }*/
-            //      EntityFactory.createRoadElement(zollaStart, z);
+
         }
 
         return false;
@@ -120,20 +103,32 @@ System.out.println(l);*/
     public boolean mouseMoved(int screenX, int screenY) {
         //  touchDragged(screenX, screenY, 0);
         Vector3 point = Util.getPoint(screenX, screenY, camera);
+        if (point == null) return true;
         Zolla z = Pool.getTerrain().getZolla(point.x, point.z);
 
         if (z.getElement() != null) return true;
 
+        createObj(z, true);
 
-        EntityFactory.createCellCursor(z);
 
-        if (started && !path.contains(z)) {
-            Zolla last = path.get(path.size() - 1);
-            EntityFactory.createRoadElement(last, z);
-            path.add(z);
-        }
+        // EntityFactory.createCellCursor(z);
+
 
         return true;
+    }
+
+    private boolean createObj(Zolla z, boolean temp) {
+        TipoOggetto obj = Pool.getSelectedObject();
+        if (obj == null) return true;
+
+        switch (obj) {
+            case FALEGNAME:
+                EntityFactory.creatHomeElement(z, temp);
+                break;
+            case BOSCAIOLO:
+                break;
+        }
+        return false;
     }
 
     @Override

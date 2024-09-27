@@ -28,6 +28,24 @@ public class Terrain {
     boolean doneLink = false;
 
     public void render(float delta) {
+
+        for (int x = -500; x < 500; x += Pool.DELTA)
+            for (int z = -500; z < 500; z += Pool.DELTA) {
+                Zolla zolla = getZolla(x, z);
+
+                lineZolla(zolla, getZolla(x + Pool.DELTA, z));
+                lineZolla(zolla, getZolla(x - Pool.DELTA, z));
+
+                lineZolla(zolla, getZolla(x, z + Pool.DELTA));
+                lineZolla(zolla, getZolla(x, z - Pool.DELTA));
+            }
+        doneLink = true;
+
+    }
+
+
+
+/*    public void render0(float delta) {
         Vector3 vec = Util.getPoint(0, 0, camera);
 //        Vector3 vecEnd = Util.getPoint((int) ChessGame.VIRTUAL_WIDTH, (int) ChessGame.VIRTUAL_HEIGHT, camera);
         if (vec == null) return;
@@ -42,15 +60,17 @@ public class Terrain {
                 lineZolla(zolla, getZolla(x, z - Pool.DELTA));
             }
         doneLink = true;
-    }
+
+
+    }*/
 
     private void lineZolla(Zolla z1, Zolla z2) {
         line(z1.getX(), z1.getZ(), z1.getY(), z2.getX(), z2.getZ(), z2.getY());
-        if (!doneLink) {
+        /*if (!doneLink) {
             VicinatoManager.addVicino(z1, z2);
             VicinatoManager.addVicino(z2, z1);
 
-        }
+        }*/
     }
 
     private void line(float x1, float y1, float z1,
@@ -72,9 +92,29 @@ public class Terrain {
         this.camera = camera;
     }
 
+    public Zolla getStoredZolla(int xx, int yy) {
+        String key = xx + "|" + yy;
+        Zolla q = map.get(key);
+        if (q == null)
+            q = createStoredZolla(xx, yy);
+        return q;
+    }
+
+    private Zolla createStoredZolla(int xx, int yy) {
+        String key = xx + "|" + yy;
+        Random rand = new Random();
+        int z = rand.nextInt(5);
+        //  z = 0;
+        float f = (float) z;
+
+        Zolla zolla = new Zolla(xx, yy, f);
+        zolla.setKey(key);
+        map.put(key, zolla);
+        return zolla;
+    }
 
     public Zolla getZolla(float x, float y) {
-        Vector2 v = Zolla.normalize(x, y);
+        Vector3 v = Zolla.normalize(x, y, 0);
         int xx = (int) v.x;
         int yy = (int) v.y;
 
@@ -82,23 +122,15 @@ public class Terrain {
 
         Zolla p = map.get(key);
         if (p == null) {
-            Random rand = new Random();
 
-            int z = rand.nextInt(5);
-            z = 0;
-            float f = (float) z;
-
-            Zolla zolla = new Zolla(xx, yy, f);
-            zolla.setKey(key);
-            map.put(key, zolla);
-            p = zolla;
+            p = createStoredZolla(xx, yy);
 
 
-            //insertAlbero(p);
+            insertAlbero(p);
 
             Entity ent = EntityFactory.createTerrainElement(p);
             p.setEntity(ent);
-            Pool.getRenderSystem().show(zolla.getPos(), zolla.getKey());
+            Pool.getRenderSystem().show(p.getPos(), p.getKey());
         }
 
         return p;
@@ -116,5 +148,13 @@ public class Terrain {
 
     public List<Zolla> getZolleAsList() {
         return new ArrayList<Zolla>(map.values());
+    }
+
+    public Zolla getRandomZolla() {
+        List<Zolla> list = getZolleAsList();
+        if (list.size() == 0) return null;
+        int i = new Random().nextInt(list.size());
+
+        return list.get(i);
     }
 }

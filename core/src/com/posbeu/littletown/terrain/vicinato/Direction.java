@@ -1,6 +1,6 @@
 package com.posbeu.littletown.terrain.vicinato;
 
-public enum VicinatoDir {
+public enum Direction {
     NE,
     SE,
     SO,

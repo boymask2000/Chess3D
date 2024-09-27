@@ -24,7 +24,7 @@ public class GameScreen implements Screen {
 
         // InputMultiplexer inputMultiplexer = (InputMultiplexer) Gdx.input.getInputProcessor();
 
-        MyInputTracker inputProcessor = gameWorld.getInputProcessor();
+        MyInputTrackerPlain inputProcessor = gameWorld.getInputProcessor();
 
         inputMultiplexer.addProcessor(inputProcessor);
         Gdx.input.setInputProcessor(inputMultiplexer);
@@ -54,6 +54,8 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         if (gameWorld != null)
             gameWorld.resize(width, height);
+
+        buttonScreen.resize(width, height);
     }
 
     @Override

@@ -1,25 +1,17 @@
 package com.posbeu.littletown.component;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.posbeu.littletown.Constants;
 import com.posbeu.littletown.Pool;
-import com.posbeu.littletown.engine.pezzi.Pezzo;
-import com.posbeu.littletown.systems.PathBuilder;
 import com.posbeu.littletown.terrain.Zolla;
 
 
-public class TerrainComponent extends BaseComponent implements Component {
+public class EdificioComponent extends BaseComponent implements Component {
 
 
     private final Zolla zolla;
@@ -28,7 +20,7 @@ public class TerrainComponent extends BaseComponent implements Component {
     public void update(float delta) {
     }
 
-    public TerrainComponent(Zolla z, Model model) {
+    public EdificioComponent(Zolla z, Model model) {
         this.zolla = z;
         init(new Vector3(z.getX() + Pool.DELTA / 2,
                 z.getZ() + Pool.DELTA / 2, z.getY()), model);
@@ -39,7 +31,7 @@ public class TerrainComponent extends BaseComponent implements Component {
         this.model = model;
 
         this.position = pos;
-        this.instance = new ModelInstance( this.model, new
+        this.instance = new ModelInstance(this.model, new
                 Matrix4().setToTranslation(pos.x, pos.y, pos.z));
 
 

@@ -42,6 +42,8 @@ public class Pool {
     @Getter
     private static OrthographicCamera guiCamera;
 
+    private static TipoOggetto selectedObject;
+
     public static void setEngine(Engine engine) {
         Pool.engine = engine;
     }
@@ -178,6 +180,14 @@ public class Pool {
 
     public static void setGuiCamera(OrthographicCamera guiCamera) {
         Pool.guiCamera = guiCamera;
+    }
+
+    public static void setSelectedButton(TipoOggetto tipoOggetto) {
+        Pool.selectedObject = tipoOggetto;
+    }
+
+    public static TipoOggetto getSelectedObject() {
+        return selectedObject;
     }
 
 }

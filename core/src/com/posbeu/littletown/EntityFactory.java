@@ -4,31 +4,19 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.loaders.ModelLoader;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
-import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
-import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.CatmullRomSpline;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
-import com.badlogic.gdx.utils.JsonReader;
 import com.posbeu.littletown.component.*;
-import com.posbeu.littletown.engine.pezzi.Color;
-import com.posbeu.littletown.engine.pezzi.Pezzo;
-import com.posbeu.littletown.models.AlberoModel;
 import com.posbeu.littletown.terrain.Zolla;
 import com.posbeu.littletown.terrain.ZollaElement;
+import com.posbeu.littletown.terrain.vicinato.Direction;
+import com.posbeu.littletown.terrain.vicinato.DirectionUtil;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class EntityFactory {
 
@@ -61,6 +49,25 @@ public class EntityFactory {
                 z);
 
         entity.add(modelComponent);
+
+        //   Pool.addInstance(modelComponent);
+        Engine engine = Pool.getEngine();
+        engine.addEntity(entity);
+    }
+
+    public static void createVagabondoEntity(Zolla startZolla, Zolla endZolla) {
+
+        Vector3 pos = startZolla.getPos();
+        VagabondoComponent vagabondoComponent = new VagabondoComponent(
+                startZolla, endZolla);
+        vagabondoComponent.setPosition(pos);
+
+        Entity entity = new Entity();
+        entity.add(vagabondoComponent);
+        vagabondoComponent.getInstance().transform.setTranslation(pos);
+
+
+        entity.add(vagabondoComponent);
 
         //   Pool.addInstance(modelComponent);
         Engine engine = Pool.getEngine();
@@ -113,6 +120,26 @@ public class EntityFactory {
         engine.removeEntity(c);
     }
 
+    private static Entity tempSelectedObject = null;
+
+    public static Entity creatHomeElement(Zolla zolla, boolean temporary) {
+        Engine engine = Pool.getEngine();
+        if (tempSelectedObject != null) {
+            engine.removeEntity(tempSelectedObject);
+            tempSelectedObject = null;
+        }
+
+        Vector3 pos = zolla.getPos();
+
+        EdificioComponent comp = new EdificioComponent(zolla, ModelManager.getg3djModel("falegname"));
+
+        Entity entity = createComponent(comp, pos);
+
+        if (temporary) tempSelectedObject = entity;
+
+        return entity;
+    }
+
     private static Entity creatAlberoElement(Zolla zolla) {
 
         Vector3 pos = zolla.getPos();
@@ -149,4 +176,51 @@ public class EntityFactory {
         return entity;
     }
 
+    public static Entity createRoadElement(Zolla z1, Zolla z2) {
+        Direction direction2 = DirectionUtil.getDirection(z2, z1);
+        Direction direction1 = DirectionUtil.getDirection(z1, z2);
+
+
+        RoadComponent comp = new RoadComponent(z1, z2);
+        z1.addRoad(direction2, comp);
+        z2.addRoad(direction1, comp);
+
+
+        Entity entity = new Entity();
+        entity.add(comp);
+
+        Engine engine = Pool.getEngine();
+        engine.addEntity(entity);
+        return entity;
+    }
+
+    public static Entity createSpLine(List<Zolla> path) {
+
+
+        int k = path.size();
+        Vector2[] points = new Vector2[k];
+        for (int i = 0; i < k; i++) {
+            points[i] = new Vector2(path.get(i).getPos().x, path.get(i).getPos().z);
+
+        }
+        CatmullRomSpline<Vector2> myCatmull = new CatmullRomSpline<Vector2>(points, true);
+        for (int i = 0; i < k; i++) {
+
+            myCatmull.valueAt(points[i], ((float) i) / ((float) k - 1));
+        }
+
+
+        Zolla z1 = path.get(0);
+        Zolla z2 = path.get(path.size() - 1);
+        RoadComponent comp = new RoadComponent(z1, z2);
+
+
+        comp.setSpLine(myCatmull, points);
+        Entity entity = new Entity();
+        entity.add(comp);
+
+        Engine engine = Pool.getEngine();
+        engine.addEntity(entity);
+        return entity;
+    }
 }

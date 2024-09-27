@@ -62,21 +62,21 @@ public class ButtonScreen implements Screen {
     private void setButton() {
         table.setPosition(50, ChessGame.VIRTUAL_HEIGHT - 100);
 
-        TextButton playButton = new TextButton("Play", Assets.skin);
+        TextButton falegnameButton = new TextButton("Falegname", Assets.skin);
 
-        TextButton quitButton = new TextButton("Quit", Assets.skin);
+        TextButton boscaioloButton = new TextButton("Boscaiolo", Assets.skin);
 
 
-        quitButton.addListener(new ClickListener() {
+        falegnameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("kkk");
+                Pool.setSelectedButton(TipoOggetto.FALEGNAME);
             }
         });
 
 
-        addButton(playButton);
-        addButton(quitButton);
+        addButton(falegnameButton);
+        addButton(boscaioloButton);
 
     }
 
@@ -185,7 +185,7 @@ public class ButtonScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height);
     }
 
     @Override

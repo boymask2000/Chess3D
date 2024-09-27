@@ -1,6 +1,5 @@
 package com.posbeu.littletown.terrain.vicinato;
 
-import com.badlogic.gdx.math.Vector2;
 import com.posbeu.littletown.terrain.Zolla;
 
 import java.util.ArrayList;
@@ -12,31 +11,31 @@ import lombok.Data;
 
 @Data
 public class Vicinato {
-    private static final Map<VicinatoDir, VicinatoDir[]> dirs = new HashMap<>();
+    private static final Map<Direction, Direction[]> dirs = new HashMap<>();
 
     static {
-        dirs.put(VicinatoDir.N, new VicinatoDir[]{VicinatoDir.N, VicinatoDir.NE, VicinatoDir.NO});
-        dirs.put(VicinatoDir.S, new VicinatoDir[]{VicinatoDir.S, VicinatoDir.SE, VicinatoDir.SO});
-        dirs.put(VicinatoDir.SO, new VicinatoDir[]{VicinatoDir.SO, VicinatoDir.S, VicinatoDir.O});
-        dirs.put(VicinatoDir.SE, new VicinatoDir[]{VicinatoDir.SE, VicinatoDir.S, VicinatoDir.E});
-        dirs.put(VicinatoDir.NE, new VicinatoDir[]{VicinatoDir.NE, VicinatoDir.N, VicinatoDir.E});
-        dirs.put(VicinatoDir.NO, new VicinatoDir[]{VicinatoDir.NO, VicinatoDir.N, VicinatoDir.O});
-        dirs.put(VicinatoDir.E, new VicinatoDir[]{VicinatoDir.E, VicinatoDir.NE, VicinatoDir.SE});
-        dirs.put(VicinatoDir.O, new VicinatoDir[]{VicinatoDir.O, VicinatoDir.NO, VicinatoDir.SO});
+        dirs.put(Direction.N, new Direction[]{Direction.N, Direction.NE, Direction.NO});
+        dirs.put(Direction.S, new Direction[]{Direction.S, Direction.SE, Direction.SO});
+        dirs.put(Direction.SO, new Direction[]{Direction.SO, Direction.S, Direction.O});
+        dirs.put(Direction.SE, new Direction[]{Direction.SE, Direction.S, Direction.E});
+        dirs.put(Direction.NE, new Direction[]{Direction.NE, Direction.N, Direction.E});
+        dirs.put(Direction.NO, new Direction[]{Direction.NO, Direction.N, Direction.O});
+        dirs.put(Direction.E, new Direction[]{Direction.E, Direction.NE, Direction.SE});
+        dirs.put(Direction.O, new Direction[]{Direction.O, Direction.NO, Direction.SO});
     }
 
-    private Map<VicinatoDir, Vicino> vicini = new HashMap<>();
+    private Map<Direction, Vicino> vicini = new HashMap<>();
 
     public void addVicino(Vicino v) {
         vicini.put(v.getDir(), v);
 
     }
 
-    public List<Zolla> get(VicinatoDir dir) {
+    public List<Zolla> get(Direction dir) {
         List<Zolla> out = new ArrayList<>();
 
-        VicinatoDir[] ll = dirs.get(dir);
-        for (VicinatoDir d : ll)
+        Direction[] ll = dirs.get(dir);
+        for (Direction d : ll)
             if (vicini.get(d) != null)
                 out.add(vicini.get(d).getZolla());
         return out;

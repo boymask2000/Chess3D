@@ -7,11 +7,9 @@ import com.posbeu.littletown.Pool;
 import com.posbeu.littletown.terrain.vicinato.VicinatoManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PathManager {
     private List<Zolla> out = new ArrayList<>();
@@ -21,8 +19,9 @@ public class PathManager {
 
     public List<Zolla> build(Zolla zollaStart, Zolla zollaTarget) {
         buildIntern(zollaStart, zollaTarget, 0);
-        System.out.println(zollaStart + "  " + zollaTarget);
-        dumpOut(best);
+
+        System.out.println("build; " + zollaStart + "  " + zollaTarget);
+        //  dumpOut(best);
         return best;
     }
 
@@ -47,25 +46,23 @@ public class PathManager {
         visited.add(zollaStart);
 
 
-        List<Zolla> vicini = VicinatoManager.getVicinato(zollaStart, zollaTarget);
-
+        //    List<Zolla> vicini = VicinatoManager.getVicinato(zollaStart, zollaTarget);
+        List<Zolla> vicini = zollaStart.getVicini();
+        System.out.println(zollaStart + " --> " + vicini);
         for (Zolla zz : vicini) {
-            //dumpOut(out);
+            System.out.println(zollaStart + " --> " + zz);
 
             if (zz.getElement() != null) continue;
             if (visited.contains(zz)) continue;
 
-            //      System.out.println(out.size() + "      " + zz);
-
             Entity ent = EntityFactory.createCellCursor0(zz);
             Pool.getGameScreen().render(Gdx.graphics.getDeltaTime());
 
-
-            if (out.size() < 20) {
+            if (out.size() < 40) {
                 out.add(zz);
 
                 if (out.size() < maxlen)
-                    buildIntern(zz, zollaTarget, level++);
+                    buildIntern(zz, zollaTarget, level + 1);
                 out.remove(zz);
                 EntityFactory.remove(ent);
                 Pool.getGameScreen().render(Gdx.graphics.getDeltaTime());

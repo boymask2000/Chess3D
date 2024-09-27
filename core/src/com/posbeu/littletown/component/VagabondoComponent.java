@@ -1,7 +1,9 @@
 package com.posbeu.littletown.component;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -14,32 +16,40 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.posbeu.littletown.Constants;
 import com.posbeu.littletown.Pool;
-import com.posbeu.littletown.engine.pezzi.Pezzo;
-import com.posbeu.littletown.systems.PathBuilder;
 import com.posbeu.littletown.terrain.Zolla;
 
+public class VagabondoComponent extends BaseComponent implements Component {
+    private Zolla startZolla;
+    private Zolla endzolla;
 
-public class TerrainComponent extends BaseComponent implements Component {
 
+    private Zolla zolla;
+    private final Vector3 tmp = new Vector3();
 
-    private final Zolla zolla;
-
-    @Override
-    public void update(float delta) {
+    public VagabondoComponent(Zolla startZolla, Zolla endZolla) {
+        this.startZolla = startZolla;
+        this.endzolla = endZolla;
+        init(new Vector3(startZolla.getX() + Pool.DELTA / 2, startZolla.getZ() + Pool.DELTA / 2, startZolla.getY()), getModel());
     }
 
-    public TerrainComponent(Zolla z, Model model) {
-        this.zolla = z;
-        init(new Vector3(z.getX() + Pool.DELTA / 2,
-                z.getZ() + Pool.DELTA / 2, z.getY()), model);
+    public Model getModel() {
+        ModelBuilder modelBuilder = new ModelBuilder();
+        Material boxMaterial = new
+                Material(ColorAttribute.createDiffuse(Color.RED),
+                ColorAttribute.createSpecular(Color.RED),
+                FloatAttribute.createShininess(16f));
+        Model box = modelBuilder.createBox(5, 5, 5, boxMaterial,
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        return box;
     }
+
 
     private void init(Vector3 pos, Model model) {
 
         this.model = model;
 
         this.position = pos;
-        this.instance = new ModelInstance( this.model, new
+        this.instance = new ModelInstance(model, new
                 Matrix4().setToTranslation(pos.x, pos.y, pos.z));
 
 
@@ -58,11 +68,24 @@ public class TerrainComponent extends BaseComponent implements Component {
         //  System.out.println(dim.x);
         this.instance.transform.translate(pos.x, pos.y, pos.z);
 
+        //     this.instance.transform.translate(zolla.getX(), zolla.getZ(), zolla.getY());
+
         //   this.instance.userData = pezzo;
     }
 
-    public Zolla getZolla() {
-        return zolla;
+    public Zolla getStartZolla() {
+        return startZolla;
     }
 
+    public void setStartZolla(Zolla startZolla) {
+        this.startZolla = startZolla;
+    }
+
+    public Zolla getEndzolla() {
+        return endzolla;
+    }
+
+    public void setEndzolla(Zolla endzolla) {
+        this.endzolla = endzolla;
+    }
 }
