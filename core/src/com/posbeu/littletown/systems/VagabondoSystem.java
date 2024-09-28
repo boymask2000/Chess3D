@@ -91,7 +91,7 @@ public class VagabondoSystem extends EntitySystem {
 
 
         float dist = target.getPos().dst(position);
-        System.out.println("Target: " + target + " current:" + currentZolla);
+
 
         if (target.equals(currentZolla))
             target = nextZolla;
@@ -138,7 +138,6 @@ public class VagabondoSystem extends EntitySystem {
 
 
         float dist = target.getPos().dst(position);
-        System.out.println("Target: " + target + " current:" + currentZolla);
 
         if (target.equals(currentZolla))
             target = nextZolla;

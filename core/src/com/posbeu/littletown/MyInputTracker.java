@@ -61,7 +61,7 @@ System.out.println(l);*/
         EntityFactory.createCellCursor(z);
 
 
-        if (!started) {
+/*        if (!started) {
             zollaStart = z;
             started = true;
             System.out.println("Punto partenza");
@@ -74,19 +74,7 @@ System.out.println(l);*/
             started = false;
 
             EntityFactory.createSpLine(path);
-          /*  System.out.println("go");
-            List<Zolla> path = calcolaPath(zollaStart, z);
-            Zolla prec = null;
-            for (Zolla zz : path) {
-                if (prec == null) {
-                    prec = zz;
-                    continue;
-                }
-                EntityFactory.createRoadElement(prec, zz);
-                prec = zz;
-            }*/
-            //      EntityFactory.createRoadElement(zollaStart, z);
-        }
+        }*/
 
         return false;
     }

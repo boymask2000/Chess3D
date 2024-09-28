@@ -20,7 +20,7 @@ public class PathManager {
     public List<Zolla> build(Zolla zollaStart, Zolla zollaTarget) {
         buildIntern(zollaStart, zollaTarget, 0);
 
-        System.out.println("build; " + zollaStart + "  " + zollaTarget);
+
         //  dumpOut(best);
         return best;
     }

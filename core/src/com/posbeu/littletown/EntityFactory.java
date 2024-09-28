@@ -134,7 +134,6 @@ public class EntityFactory {
         EdificioComponent comp = new EdificioComponent(zolla, ModelManager.getg3djModel("falegname"));
 
         Entity entity = createComponent(comp, pos);
-
         if (temporary) tempSelectedObject = entity;
 
         return entity;

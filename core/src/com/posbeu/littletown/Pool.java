@@ -186,8 +186,8 @@ public class Pool {
         Pool.selectedObject = tipoOggetto;
     }
 
-    public static TipoOggetto getSelectedObject() {
-        return selectedObject;
+    public static TipoOggetto getSelectedButton() {
+        return Pool.selectedObject;
     }
 
 }

@@ -73,7 +73,12 @@ public class ButtonScreen implements Screen {
                 Pool.setSelectedButton(TipoOggetto.FALEGNAME);
             }
         });
-
+        boscaioloButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Pool.setSelectedButton(TipoOggetto.BOSCAIOLO);
+            }
+        });
 
         addButton(falegnameButton);
         addButton(boscaioloButton);
@@ -81,7 +86,7 @@ public class ButtonScreen implements Screen {
     }
 
     private void addButton(TextButton b) {
-        table.add(b).width(100).padBottom(10);
+        table.add(b).width(100).height(90).padBottom(5);
         table.row();
     }
 

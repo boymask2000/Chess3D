@@ -20,12 +20,8 @@ public class MyInputTrackerPlain implements InputProcessor {
     private PerspectiveCamera camera;
     private Engine engine;
     private ShapeRenderer shapeRenderer;
-    private BaseComponent first = null;
-    private CellCursorComponent cellCursorComponent;
-    List<Zolla> path = new ArrayList<>();
 
-    Zolla zollaStart;
-    private boolean started = false;
+    private List<Zolla> path = new ArrayList<>();
 
     @Override
     public boolean keyDown(int keycode) {
@@ -42,35 +38,23 @@ public class MyInputTrackerPlain implements InputProcessor {
         return false;
     }
 
+    boolean vagCreated = false;
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
 
         Vector3 point = Util.getPoint(screenX, screenY, camera);
 
         Zolla z = Pool.getTerrain().getZolla(point.x, point.z);
 
-
-        //    EntityFactory.createCellCursor(z);
-
-
         createObj(z, false);
+        Pool.setSelectedButton(null);
 
-        if (!started) {
-            zollaStart = z;
-            started = true;
-            System.out.println("Punto partenza");
 
-            return true;
+        if (!vagCreated) {
+            vagCreated = true;
+            EntityFactory.createVagabondoEntity(z, z);
         }
-        if (started) {
-
-            started = false;
-            EntityFactory.createVagabondoEntity(zollaStart, z);
-
-
-        }
-
         return false;
     }
 
@@ -118,7 +102,7 @@ public class MyInputTrackerPlain implements InputProcessor {
     }
 
     private boolean createObj(Zolla z, boolean temp) {
-        TipoOggetto obj = Pool.getSelectedObject();
+        TipoOggetto obj = Pool.getSelectedButton();
         if (obj == null) return true;
 
         switch (obj) {
