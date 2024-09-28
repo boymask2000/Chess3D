@@ -130,6 +130,7 @@ public class EntityFactory {
             engine.removeEntity(tempSelectedObject);
             tempSelectedObject = null;
         }
+        edificio.setZolla(zolla);
 
         Vector3 pos = zolla.getPos();
 

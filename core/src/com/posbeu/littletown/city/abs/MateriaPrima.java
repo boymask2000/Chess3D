@@ -4,6 +4,8 @@ import com.posbeu.littletown.city.enums.TipoMerce;
 
 public class MateriaPrima {
     private TipoMerce tipoMerce;
+
+
     private int quantita;
 
 
@@ -16,6 +18,9 @@ public class MateriaPrima {
         return tipoMerce;
     }
 
+    public void setQuantita(int quantita) {
+        this.quantita = quantita;
+    }
     public int getQuantita() {
         return quantita;
     }

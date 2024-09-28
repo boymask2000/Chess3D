@@ -2,6 +2,7 @@ package com.posbeu.littletown.city.abs;
 
 import com.posbeu.littletown.city.enums.TipoEdificio;
 import com.posbeu.littletown.city.enums.TipoMerce;
+import com.posbeu.littletown.city.infrastruct.CentraleOrdini;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,76 +17,91 @@ public class EdificoProduzione extends Edificio {
     private int maxGiacenza = 5;
     private int delayWorking = 2000; //millisecondi
     private long lastTimeWorking = 0;
-    private Map<TipoMerce, Giacenza> giacenze = new HashMap<>();
+    private int giacenze = 0;
 
-    private List<TipoMerce> merceProdotta = new ArrayList<>();
+
+    private TipoMerce merceProdotta;
     private Set<MateriaPrima> merceNecessaria = new HashSet<>();
-    private Set<MateriaPrima> merceDisponibile = new HashSet<>();
+    private Map<TipoMerce, MateriaPrima> merceDisponibile = new HashMap<>();
+    private Map<TipoMerce, Integer> merceOrdinata = new HashMap<>();
 
-    public EdificoProduzione(TipoEdificio tipoEdificio, //
-                             List<TipoMerce> merceProdotta, //
-                             Set<MateriaPrima> merceNecessaria) {
-        super(tipoEdificio);
-        this.merceProdotta = merceProdotta;
-        this.merceNecessaria = merceNecessaria;
-        initGiacenze();
-    }
 
     public EdificoProduzione(TipoEdificio tipoEdificio, //
                              TipoMerce merceProdotta, //
                              MateriaPrima merceNecessaria) {
         super(tipoEdificio);
-        this.merceProdotta.add(merceProdotta);
+        this.merceProdotta = merceProdotta;
         if (merceNecessaria != null)
             this.merceNecessaria.add(merceNecessaria);
-        initGiacenze();
+
     }
 
-    private void initGiacenze() {
-        for (TipoMerce tipoMerce : merceProdotta)
-            giacenze.put(tipoMerce, new Giacenza(tipoMerce, 0));
-    }
 
     public void work() {
         if (new Date().getTime() - lastTimeWorking < delayWorking) return;
         lastTimeWorking = new Date().getTime();
 
 
-        //decidere cosa produrre ib base alla giacenza
+        //Verificare giacenza
+        if (giacenze >= maxGiacenza) return;
 
-        TipoMerce daProdurre = getTipoMerceDaProdurre();
-        if (daProdurre == null) return;
+
+        //TODO verificare materie prime o ordinare
+        if (!materiePresenti()) return;
+
         System.out.println(
-                "Produco: " + daProdurre + " " + new Date()
+                "Produco: " + merceProdotta + " " + new Date()
         );
-        //verificare materie prime o ordinare
+        //produrre aggiornare giacenze
+        aggiornaGiacenze();
 
-        //produrre
 
-        //aggiornare giacenze
-        int giace = giacenze.get(daProdurre).getQuantita();
-        System.out.println(
-                giace
-        );
-        giacenze.put(daProdurre, new Giacenza(daProdurre, giace + 1));
+        //TODO aggiornare materie prime
+        agiornaMateriePrime();
 
-        //aggiornare materie prime
-
-        //richiedere trasporto
+        //TODO notifica produzione
     }
 
-    private TipoMerce getTipoMerceDaProdurre() {
-        List<TipoMerce> oks = new ArrayList<>();
-        for (TipoMerce tipoMerce : merceProdotta) {
-            if (giacenze.get(tipoMerce).getQuantita() < maxGiacenza) {
-                oks.add(tipoMerce);
+    private void agiornaMateriePrime() {
+        for (MateriaPrima m : merceNecessaria) {
+            TipoMerce merceRichiesta = m.getTipoMerce();
+            int qtaRichiesta = m.getQuantita();
+
+            if (merceDisponibile.containsKey(merceRichiesta)) {
+                MateriaPrima mm = merceDisponibile.get(merceRichiesta);
+                mm.setQuantita(mm.getQuantita() - qtaRichiesta);
+                merceDisponibile.put(merceRichiesta, mm);
             }
         }
-        if (oks.size() == 0) return null;
-        if (oks.size() == 1) return oks.get(0);
-        Random r = new Random();
-        int i = r.nextInt(oks.size());
-        return oks.get(i);
     }
 
+    private boolean materiePresenti() {
+        boolean out = true;
+        for (MateriaPrima m : merceNecessaria) {
+            TipoMerce merceRichiesta = m.getTipoMerce();
+            int qtaRichiesta = m.getQuantita();
+
+            if (!merceDisponibile.containsKey(merceRichiesta) || merceDisponibile.get(merceRichiesta).getQuantita() +
+                    merceOrdinata.get(merceRichiesta) < qtaRichiesta) {
+
+                creaOrdine(merceRichiesta);
+                out = false;
+            }
+        }
+
+        return out;
+    }
+
+    private void creaOrdine(TipoMerce merceRichiesta) {
+        Integer ord = merceOrdinata.get(merceRichiesta);
+        if (ord == null) merceOrdinata.put(merceRichiesta, 1);
+        else
+            merceOrdinata.put(merceRichiesta, ord + 1);
+
+        CentraleOrdini.creaOrdine(this, merceRichiesta);
+    }
+
+    private void aggiornaGiacenze() {
+        giacenze++;
+    }
 }

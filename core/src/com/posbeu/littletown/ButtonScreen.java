@@ -62,7 +62,8 @@ public class ButtonScreen implements Screen {
         TextButton falegnameButton = new TextButton("Falegname", Assets.skin);
 
         TextButton boscaioloButton = new TextButton("Boscaiolo", Assets.skin);
-        TextButton pozzooButton = new TextButton("Pozzo", Assets.skin);
+        TextButton pozzoButton = new TextButton("Pozzo", Assets.skin);
+        TextButton segheriaButton = new TextButton("Segheria", Assets.skin);
 
 
         falegnameButton.addListener(new ClickListener() {
@@ -77,16 +78,23 @@ public class ButtonScreen implements Screen {
                 Pool.setSelectedButton(TipoOggetto.BOSCAIOLO);
             }
         });
-        pozzooButton.addListener(new ClickListener() {
+        pozzoButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Pool.setSelectedButton(TipoOggetto.POZZO);
             }
         });
+        segheriaButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Pool.setSelectedButton(TipoOggetto.SEGHERIA);
+            }
+        });
 
         addButton(falegnameButton);
         addButton(boscaioloButton);
-        addButton(pozzooButton);
+        addButton(pozzoButton);
+        addButton(segheriaButton);
 
     }
 

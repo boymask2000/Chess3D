@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.posbeu.littletown.city.Pozzo;
+import com.posbeu.littletown.city.Segheria;
 import com.posbeu.littletown.terrain.PathManager;
 import com.posbeu.littletown.terrain.Zolla;
 
@@ -112,6 +113,9 @@ public class MyInputTrackerPlain implements InputProcessor {
                 break;
             case POZZO:
                 EntityFactory.creatHomeElement(z, temp, new Pozzo());
+                break;
+            case SEGHERIA:
+                EntityFactory.creatHomeElement(z, temp, new Segheria());
                 break;
         }
         return false;

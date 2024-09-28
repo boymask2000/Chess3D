@@ -4,5 +4,5 @@ public enum TipoEdificio {
     FALEGNAME,
     BOSCAIOLO,
     POZZZO,
-    HEADQUARTER
+    SEGHERIA, HEADQUARTER
 }
