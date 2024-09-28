@@ -14,10 +14,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.posbeu.littletown.component.ModelComponent;
-import com.posbeu.littletown.component.MossaPossibileComponent;
 
-import com.posbeu.littletown.engine.ChessEngine;
-import com.posbeu.littletown.engine.pezzi.Pezzo;
+
+
 import com.posbeu.littletown.systems.RenderSystem;
 import com.posbeu.littletown.terrain.Terrain;
 
@@ -82,17 +81,6 @@ public class Pool {
     private static List<Entity> markers = new ArrayList<>();
 
 
-    public static void addMossaPossibile(MossaPossibileComponent m) {
-
-
-        Entity entity = new Entity();
-        entity.add(m);
-        //    addEntity(entity);
-        markers.add(entity);//  <----------- attenzionw
-        engine.addEntity(entity);
-    }
-
-
     public static void setCamera(PerspectiveCamera camera) {
         Pool.camera = camera;
     }
@@ -100,12 +88,12 @@ public class Pool {
     public static BitmapFont getFont() {
         if (generator == null) {
             FreeTypeFontGenerator.FreeTypeFontParameter par = new FreeTypeFontGenerator.FreeTypeFontParameter();
-            par.size = 4;
+            par.size = 12;
             FileHandle fontFile = Gdx.files.internal("fonts/OpenSans-Italic.ttf");
             generator = new FreeTypeFontGenerator(fontFile);
             genericfont = generator.generateFont(par); // px
             genericfont.setColor(Color.WHITE);
-            genericfont.getData().setScale(0.7f);
+            genericfont.getData().setScale(0.4f);
             genericfont.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         }
         return genericfont;

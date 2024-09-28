@@ -6,12 +6,17 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.utils.JsonReader;
+import com.posbeu.littletown.city.abs.Edificio;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ModelManager {
     private static Map<String, Model> models = new HashMap<>();
+
+    public static Model getModel(Edificio edificio) {
+        return ModelManager.getg3djModel("falegname");
+    }
 
     public static Model getg3djModel(String fName) {
 

@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
+import com.posbeu.littletown.city.Pozzo;
+import com.posbeu.littletown.city.abs.Edificio;
 import com.posbeu.littletown.component.*;
 import com.posbeu.littletown.terrain.Zolla;
 import com.posbeu.littletown.terrain.ZollaElement;
@@ -122,7 +124,7 @@ public class EntityFactory {
 
     private static Entity tempSelectedObject = null;
 
-    public static Entity creatHomeElement(Zolla zolla, boolean temporary) {
+    public static Entity creatHomeElement(Zolla zolla, boolean temporary, Edificio edificio) {
         Engine engine = Pool.getEngine();
         if (tempSelectedObject != null) {
             engine.removeEntity(tempSelectedObject);
@@ -131,7 +133,8 @@ public class EntityFactory {
 
         Vector3 pos = zolla.getPos();
 
-        EdificioComponent comp = new EdificioComponent(zolla, ModelManager.getg3djModel("falegname"));
+        EdificioComponent comp = new EdificioComponent(zolla, ModelManager.getModel(edificio));
+        comp.setEdificio(edificio);
 
         Entity entity = createComponent(comp, pos);
         if (temporary) tempSelectedObject = entity;

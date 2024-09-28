@@ -7,21 +7,18 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.posbeu.littletown.ui.widget.TestWidget;
 
 
 public class ButtonScreen implements Screen {
@@ -65,6 +62,7 @@ public class ButtonScreen implements Screen {
         TextButton falegnameButton = new TextButton("Falegname", Assets.skin);
 
         TextButton boscaioloButton = new TextButton("Boscaiolo", Assets.skin);
+        TextButton pozzooButton = new TextButton("Pozzo", Assets.skin);
 
 
         falegnameButton.addListener(new ClickListener() {
@@ -79,9 +77,16 @@ public class ButtonScreen implements Screen {
                 Pool.setSelectedButton(TipoOggetto.BOSCAIOLO);
             }
         });
+        pozzooButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Pool.setSelectedButton(TipoOggetto.POZZO);
+            }
+        });
 
         addButton(falegnameButton);
         addButton(boscaioloButton);
+        addButton(pozzooButton);
 
     }
 

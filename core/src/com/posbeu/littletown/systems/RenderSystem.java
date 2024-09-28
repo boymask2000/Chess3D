@@ -78,6 +78,7 @@ public class RenderSystem extends EntitySystem {
             EdificioComponent mod =
                     edificioEntities.get(i).getComponent(EdificioComponent.class);
             batch.render(mod.instance, environment);
+            mod.update(1);
 
         }
         for (int i = 0; i < cellCursorEntities.size(); i++) {

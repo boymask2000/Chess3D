@@ -8,7 +8,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.posbeu.littletown.Constants;
 import com.posbeu.littletown.Pool;
+import com.posbeu.littletown.city.abs.Edificio;
 import com.posbeu.littletown.terrain.Zolla;
+import com.posbeu.littletown.terrain.ZollaElement;
 
 
 public class EdificioComponent extends BaseComponent implements Component {
@@ -16,8 +18,12 @@ public class EdificioComponent extends BaseComponent implements Component {
 
     private final Zolla zolla;
 
+
+    private Edificio edificio;
+
     @Override
     public void update(float delta) {
+        edificio.work();
     }
 
     public EdificioComponent(Zolla z, Model model) {
@@ -55,6 +61,15 @@ public class EdificioComponent extends BaseComponent implements Component {
 
     public Zolla getZolla() {
         return zolla;
+    }
+
+    public void setEdificio(Edificio edificio) {
+        this.edificio = edificio;
+        zolla.setElement(ZollaElement.EDIFICIO);
+    }
+
+    public Edificio getEdificio() {
+        return edificio;
     }
 
 }

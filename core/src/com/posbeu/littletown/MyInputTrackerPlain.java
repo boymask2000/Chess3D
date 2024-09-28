@@ -5,8 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.posbeu.littletown.component.BaseComponent;
-import com.posbeu.littletown.component.CellCursorComponent;
+import com.posbeu.littletown.city.Pozzo;
 import com.posbeu.littletown.terrain.PathManager;
 import com.posbeu.littletown.terrain.Zolla;
 
@@ -107,9 +106,12 @@ public class MyInputTrackerPlain implements InputProcessor {
 
         switch (obj) {
             case FALEGNAME:
-                EntityFactory.creatHomeElement(z, temp);
+                EntityFactory.creatHomeElement(z, temp, new Pozzo());
                 break;
             case BOSCAIOLO:
+                break;
+            case POZZO:
+                EntityFactory.creatHomeElement(z, temp, new Pozzo());
                 break;
         }
         return false;

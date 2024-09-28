@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.posbeu.littletown.Constants;
 import com.posbeu.littletown.Pool;
-import com.posbeu.littletown.engine.pezzi.Pezzo;
+
 import com.posbeu.littletown.systems.PathBuilder;
 import com.posbeu.littletown.terrain.Zolla;
 

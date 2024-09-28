@@ -132,7 +132,7 @@ public class Terrain {
             p.setEntity(ent);
             Pool.getRenderSystem().show(p.getPos(), p.getKey());
         }
-
+        // Pool.getRenderSystem().show(p.getPos(), "ww");
         return p;
     }
 

@@ -14,7 +14,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.posbeu.littletown.Constants;
 import com.posbeu.littletown.Pool;
-import com.posbeu.littletown.engine.player.BoardGDX;
 import com.posbeu.littletown.terrain.Zolla;
 
 public class CellCursorComponent extends BaseComponent implements Component {
