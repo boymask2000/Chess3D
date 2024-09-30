@@ -4,9 +4,10 @@ import com.posbeu.littletown.city.enums.TipoEdificio;
 import com.posbeu.littletown.terrain.Zolla;
 
 public abstract class Edificio {
+
+    private boolean working = false;
+
     private final TipoEdificio tipoEdificio;
-
-
     private Zolla zolla;
 
     public Edificio(TipoEdificio tipoEdificio) {
@@ -26,6 +27,14 @@ public abstract class Edificio {
 
     public Zolla getZolla() {
         return zolla;
+    }
+
+    public boolean isWorking() {
+        return working;
+    }
+
+    public void setWorking(boolean working) {
+        this.working = working;
     }
 
 }

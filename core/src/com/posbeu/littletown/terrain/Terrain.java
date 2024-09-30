@@ -4,12 +4,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.posbeu.littletown.EntityFactory;
 import com.posbeu.littletown.Pool;
-import com.posbeu.littletown.Util;
-import com.posbeu.littletown.terrain.vicinato.VicinatoManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,27 +39,6 @@ public class Terrain {
         doneLink = true;
 
     }
-
-
-
-/*    public void render0(float delta) {
-        Vector3 vec = Util.getPoint(0, 0, camera);
-//        Vector3 vecEnd = Util.getPoint((int) ChessGame.VIRTUAL_WIDTH, (int) ChessGame.VIRTUAL_HEIGHT, camera);
-        if (vec == null) return;
-        for (float x = vec.x; x < vec.x + 500; x += Pool.DELTA)
-            for (float z = vec.z - 500; z < vec.z + 500; z += Pool.DELTA) {
-                Zolla zolla = getZolla(x, z);
-
-                lineZolla(zolla, getZolla(x + Pool.DELTA, z));
-                lineZolla(zolla, getZolla(x - Pool.DELTA, z));
-
-                lineZolla(zolla, getZolla(x, z + Pool.DELTA));
-                lineZolla(zolla, getZolla(x, z - Pool.DELTA));
-            }
-        doneLink = true;
-
-
-    }*/
 
     private void lineZolla(Zolla z1, Zolla z2) {
         line(z1.getX(), z1.getZ(), z1.getY(), z2.getX(), z2.getZ(), z2.getY());
@@ -104,7 +80,7 @@ public class Terrain {
         String key = xx + "|" + yy;
         Random rand = new Random();
         int z = rand.nextInt(5);
-        //  z = 0;
+        z = 0;
         float f = (float) z;
 
         Zolla zolla = new Zolla(xx, yy, f);
@@ -126,7 +102,7 @@ public class Terrain {
             p = createStoredZolla(xx, yy);
 
 
-            insertAlbero(p);
+            //    insertAlbero(p);
 
             Entity ent = EntityFactory.createTerrainElement(p);
             p.setEntity(ent);

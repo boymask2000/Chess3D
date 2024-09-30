@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.posbeu.littletown.city.Boscaiolo;
 import com.posbeu.littletown.city.Pozzo;
 import com.posbeu.littletown.city.Segheria;
 import com.posbeu.littletown.terrain.PathManager;
@@ -53,7 +54,7 @@ public class MyInputTrackerPlain implements InputProcessor {
 
         if (!vagCreated) {
             vagCreated = true;
-            EntityFactory.createVagabondoEntity(z, z);
+            EntityFactory.createCarrierEntity(z);
         }
         return false;
     }
@@ -110,6 +111,7 @@ public class MyInputTrackerPlain implements InputProcessor {
                 EntityFactory.creatHomeElement(z, temp, new Pozzo());
                 break;
             case BOSCAIOLO:
+                EntityFactory.creatHomeElement(z, temp, new Boscaiolo());
                 break;
             case POZZO:
                 EntityFactory.creatHomeElement(z, temp, new Pozzo());

@@ -76,6 +76,25 @@ public class EntityFactory {
         engine.addEntity(entity);
     }
 
+    public static void createCarrierEntity(Zolla startZolla) {
+
+        Vector3 pos = startZolla.getPos();
+        CarrierComponent carrierComponent = new CarrierComponent(
+                startZolla);
+        carrierComponent.setPosition(pos);
+
+        Entity entity = new Entity();
+        entity.add(carrierComponent);
+        carrierComponent.getInstance().transform.setTranslation(pos);
+
+
+        entity.add(carrierComponent);
+
+        //   Pool.addInstance(modelComponent);
+        Engine engine = Pool.getEngine();
+        engine.addEntity(entity);
+    }
+
 
     public static void cleanCursor() {
         Engine engine = Pool.getEngine();
@@ -130,7 +149,9 @@ public class EntityFactory {
             engine.removeEntity(tempSelectedObject);
             tempSelectedObject = null;
         }
+        edificio.setWorking(!temporary);
         edificio.setZolla(zolla);
+
 
         Vector3 pos = zolla.getPos();
 

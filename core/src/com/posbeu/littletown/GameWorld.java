@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.posbeu.littletown.systems.CarrierSystem;
 import com.posbeu.littletown.systems.PathBuilder;
 import com.posbeu.littletown.systems.RenderSystem;
 
@@ -108,8 +109,9 @@ public class GameWorld {
         engine = new Engine();
         engine.addSystem(new RenderSystem(modelBatch, environment));
 
-        engine.addSystem(new PathBuilder(modelBatch, environment));
+        //    engine.addSystem(new PathBuilder(modelBatch, environment));
         engine.addSystem(new VagabondoSystem(modelBatch, environment));
+        engine.addSystem(new CarrierSystem(modelBatch, environment));
         Pool.setEngine(engine);
 
     }

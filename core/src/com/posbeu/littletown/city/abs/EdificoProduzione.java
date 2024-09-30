@@ -3,6 +3,7 @@ package com.posbeu.littletown.city.abs;
 import com.posbeu.littletown.city.enums.TipoEdificio;
 import com.posbeu.littletown.city.enums.TipoMerce;
 import com.posbeu.littletown.city.infrastruct.CentraleOrdini;
+import com.posbeu.littletown.city.infrastruct.RegistroProduzioni;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +39,7 @@ public class EdificoProduzione extends Edificio {
 
 
     public void work() {
+        if (!isWorking()) return;
         if (new Date().getTime() - lastTimeWorking < delayWorking) return;
         lastTimeWorking = new Date().getTime();
 
@@ -60,6 +62,7 @@ public class EdificoProduzione extends Edificio {
         agiornaMateriePrime();
 
         //TODO notifica produzione
+        RegistroProduzioni.notifica(this, merceProdotta);
     }
 
     private void agiornaMateriePrime() {
