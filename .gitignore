@@ -1,0 +1,20 @@
+# Build & IDE files
+build/
+dist/
+nbbuild/
+nbproject/private/
+*.class
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Java
+*.log
+
+# JME temp files
+*.j3o~
+
+*.lock
+*.bin
+*.ser
