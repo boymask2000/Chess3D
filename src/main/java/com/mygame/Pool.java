@@ -5,14 +5,18 @@
 package com.mygame;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.bounding.BoundingBox;
 import com.jme3.input.InputManager;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+import com.jme3.scene.debug.WireBox;
 import com.jme3.system.AppSettings;
-import com.mygame.base.walkers.Walker0;
-import com.mygame.buildings.edifici.Edificio;
+import com.mygame.pezzi.Pezzo;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +26,7 @@ import java.util.List;
  */
 public class Pool {
 
-    private static final List<Walker0> walkers = new ArrayList<>();
-    private static final List<Edificio> edifici = new ArrayList<>();
-
- 
+    private static final List<Pezzo> pezzi = new ArrayList<>();
 
     private static Geometry marker;
     private static Vector3f intersection;
@@ -128,18 +129,38 @@ public class Pool {
         return assetManager;
     }
 
-    public static List<Walker0> getWalkers() {
-        return walkers;
+    public static void addPezzo(Pezzo ed) {
+        pezzi.add(ed);
+
+       // addBoundingBox(ed.getNode());
     }
 
-    public static void addWalker(Walker0 k) {
+    private static void addBoundingBox(Spatial spatial) {
+        if (spatial == null) {
+            return;
+        }
+        spatial.updateGeometricState();
+        spatial.updateModelBound(); // Assicurati che il bound sia aggiornato
 
-        walkers.add(k);
-    }
-    public static void addEdificio( Edificio ed ){
-        edifici.add(ed);
-    }
-   public static List<Edificio> getEdifici() {
-        return edifici;
+        if (spatial.getWorldBound() instanceof BoundingBox) {
+            BoundingBox bbox = (BoundingBox) spatial.getWorldBound();
+
+            WireBox wireBox = new WireBox(
+                    bbox.getXExtent(),
+                    bbox.getYExtent(),
+                    bbox.getZExtent()
+            );
+
+            Geometry bboxGeom = new Geometry("BBox", wireBox);
+
+            Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+            mat.setColor("Color", ColorRGBA.Green);
+            mat.getAdditionalRenderState().setWireframe(true);
+            bboxGeom.setMaterial(mat);
+
+            // Posiziona la wirebox al centro del bounding box
+            bboxGeom.setLocalTranslation(bbox.getCenter());
+            rootNode.attachChild(bboxGeom);
+        }
     }
 }

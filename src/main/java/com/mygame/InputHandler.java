@@ -1,7 +1,6 @@
 package com.mygame;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.collision.CollisionResults;
 import com.jme3.input.MouseInput;
 import com.jme3.input.RawInputListener;
 import com.jme3.input.controls.ActionListener;
@@ -15,16 +14,11 @@ import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import static com.mygame.ScreenCommand.CREATE_DEPOSITO;
 import static com.mygame.ScreenCommand.CREATE_FALEGNAME;
 import static com.mygame.ScreenCommand.CREATE_MULINO;
 import static com.mygame.ScreenCommand.CREATE_POZZO;
-import com.mygame.buildings.FactoryBuildings;
-import com.mygame.buildings.TipoEdificio;
-import com.mygame.buildings.edifici.Edificio;
-import com.mygame.catasto.InventarioEdifici;
 
 /**
  *
@@ -50,43 +44,43 @@ public class InputHandler {
                 Spatial edificio = null;
                 switch (command) {
                     case CREATE_FALEGNAME:
-                        edificio = FactoryBuildings.createBuilding(TipoEdificio.FALEGNAME, click3d);
+                    //    edificio = FactoryBuildings.createBuilding(TipoEdificio.FALEGNAME, click3d);
                         setObject(click3d, ColorRGBA.Blue, edificio);
                         break;
                     case CREATE_POZZO:
-                        edificio = FactoryBuildings.createBuilding(TipoEdificio.POZZO, click3d);
+                      //  edificio = FactoryBuildings.createBuilding(TipoEdificio.POZZO, click3d);
                         setObject(click3d, ColorRGBA.Blue, edificio);
                         break;
                     case CREATE_TAGLIALEGNA:
-                        edificio = FactoryBuildings.createBuilding(TipoEdificio.TAGLIALEGNA, click3d);
+                        //edificio = FactoryBuildings.createBuilding(TipoEdificio.TAGLIALEGNA, click3d);
                         setObject(click3d, ColorRGBA.Blue, edificio);
                         break;
                     case CREATE_FORESTALE:
-                        edificio = FactoryBuildings.createBuilding(TipoEdificio.FORESTALE, click3d);
+                       // edificio = FactoryBuildings.createBuilding(TipoEdificio.FORESTALE, click3d);
                         setObject(click3d, ColorRGBA.Blue, edificio);
                         break;
                     case CREATE_DEPOSITO:
-                        edificio = FactoryBuildings.createBuilding(TipoEdificio.DEPOSITO, click3d);
+                        //edificio = FactoryBuildings.createBuilding(TipoEdificio.DEPOSITO, click3d);
                         setObject(click3d, ColorRGBA.Blue, edificio);
                         break;
                     case CREATE_ALLEVATORE_MAIALI:
-                        edificio = FactoryBuildings.createBuilding(TipoEdificio.ALLEVATORE_MAIALI, click3d);
+                        //edificio = FactoryBuildings.createBuilding(TipoEdificio.ALLEVATORE_MAIALI, click3d);
                         setObject(click3d, ColorRGBA.Blue, edificio);
                         break;
                     case CREATE_FORNO:
-                        edificio = FactoryBuildings.createBuilding(TipoEdificio.FORNO, click3d);
+                       // edificio = FactoryBuildings.createBuilding(TipoEdificio.FORNO, click3d);
                         setObject(click3d, ColorRGBA.Blue, edificio);
                         break;
                     case CREATE_MACELLAIO:
-                        edificio = FactoryBuildings.createBuilding(TipoEdificio.MACELLAIO, click3d);
+                        //edificio = FactoryBuildings.createBuilding(TipoEdificio.MACELLAIO, click3d);
                         setObject(click3d, ColorRGBA.Blue, edificio);
                         break;
                     case CREATE_MULINO:
-                        edificio = FactoryBuildings.createBuilding(TipoEdificio.MULINO, click3d);
+                        //edificio = FactoryBuildings.createBuilding(TipoEdificio.MULINO, click3d);
                         setObject(click3d, ColorRGBA.Blue, edificio);
                         break;
                     case CREATE_COLTIVATORE_GRANO:
-                        edificio = FactoryBuildings.createBuilding(TipoEdificio.COLTIVATORE_GRANO, click3d);
+                        //edificio = FactoryBuildings.createBuilding(TipoEdificio.COLTIVATORE_GRANO, click3d);
                         setObject(click3d, ColorRGBA.Blue, edificio);
                         break;
                 }
@@ -140,7 +134,7 @@ public class InputHandler {
                 Vector3f intersection = new Vector3f();
 
                 if (ray.intersectsWherePlane(ground, intersection)) {
-
+System.out.println("Intersec = "+intersection);
                     // Sposta il marcatore
                     Pool.getMarker().setLocalTranslation(intersection);
                     Pool.getMarker().setCullHint(Spatial.CullHint.Inherit); // Rendi visibile
@@ -150,48 +144,13 @@ public class InputHandler {
             }
         }
     };
-    private final static ActionListener popupActionListener = new ActionListener() {
-        public void onAction(String name, boolean isPressed, float tpf) {
-            //Qui elimino il menu se è mostrato. Da migliorare
-            if (Pool.getGuiNode().getChildren().size() > 1) {
-                Pool.getGuiNode().detachChildAt(1);
-            }
-
-            if (name.equals("ShowMenu") && !isPressed) {
-
-                CollisionResults results = new CollisionResults();
-                Vector2f click2d = Pool.getInputManager().getCursorPosition();
-                Vector3f origin = Pool.getCam().getWorldCoordinates(click2d, 0f);
-                Vector3f direction = Pool.getCam().getWorldCoordinates(click2d, 1f).subtract(origin).normalizeLocal();
-                Ray ray = new Ray(origin, direction);
-
-                Pool.getRootNode().collideWith(ray, results);
-            
-                if (results.size() > 0) {
-                    Geometry target = results.getClosestCollision().getGeometry();
-
-                    Edificio ed = InventarioEdifici.searchEdificioByGeometry(target);
-
-                    if (ed != null) {
-                        ed.showPopupMenu();
-                    }
-                    //  if (target == cube) {
-//                        Vector3f worldPoint = results.getClosestCollision().getContactPoint();
-//                        showPopupMenu(worldPoint);
-                    // }
-                }
-            }
-        }
-    };
-
+   
     public static void enable(SimpleApplication app) {
 
         app.getInputManager().addMapping(MAPPING_ROTATE, TRIGGER_ROTATE);
         app.getInputManager().addListener(analogListener, new String[]{MAPPING_ROTATE});
         app.getInputManager().addListener(actionListener, "Click");
 
-        app.getInputManager().addMapping("ShowMenu", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-        app.getInputManager().addListener(popupActionListener, "ShowMenu");
 
         app.getInputManager().addRawInputListener(new RawInputListener() {
 

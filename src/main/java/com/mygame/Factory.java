@@ -4,7 +4,6 @@
  */
 package com.mygame;
 
-import com.jme3.anim.AnimComposer;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -14,9 +13,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Texture;
-import com.mygame.base.walkers.ControlWalker0;
-import com.mygame.base.walkers.Walker1;
-import com.mygame.buildings.edifici.Edificio;
 
 /**
  *
@@ -63,19 +59,7 @@ public class Factory {
         return geom;
     }
 
-    public void createWalker(Edificio ed) {
-//        AnimComposer control;
-//        Node walkerNode = (Node) Pool.getAssetManager().loadModel("Models/Oto/Oto.mesh.xml");
-//        walkerNode.setLocalScale(0.2f);
-//        control = walkerNode.getControl(AnimComposer.class);
-//        control.setCurrentAction("Walk");
 
-        //      appl.getRootNode().attachChild(walkerNode);
-//        ControlWalker controlWalk = new ControlWalker(new Walker(ed, walkerNode, control));
-//        walkerNode.addControl(controlWalk);
-        ControlWalker0 controlWalk0 = new ControlWalker0(new Walker1(ed));
-        //      walkerNode.addControl(controlWalk0);
-    }
 
     public Node createItem(String modelPath) {
         if (modelPath == null) {
